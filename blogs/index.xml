@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on EcoAI Lab</title>
+    <link>http://localhost:1313/blogs/</link>
+    <description>Recent content in Blog on EcoAI Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 22 Jun 2026 22:23:07 -0500</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/blogs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Efficient Image Editing via HiLo-Token</title>
+      <link>http://localhost:1313/blogs/hilo-token/</link>
+      <pubDate>Mon, 22 Jun 2026 22:23:07 -0500</pubDate>
+      
+      <guid>http://localhost:1313/blogs/hilo-token/</guid>
+      <description>Creative image editing features such as Photoshop&amp;rsquo;s Remove Tool and Generative Fill are used by millions of customers and account for a large share of Photoshop and Lightroom traffic; within 28 days of the Photoshop v27.0 release, 1.1 million of 3.3 million users engaged with Generative Fill, generating 36.2 million interactions. Serving these features at scale is becoming more expensive as the field moves from convolution-based U-Nets to Diffusion Transformers (DiTs), which are roughly 6x costlier to serve in the cloud despite having 1.</description>
+    </item>
+    
+    <item>
+      <title>Hardware-Inspired ShiftAddNets</title>
+      <link>http://localhost:1313/blogs/shiftadd/</link>
+      <pubDate>Wed, 25 Sep 2024 08:23:07 -0500</pubDate>
+      
+      <guid>http://localhost:1313/blogs/shiftadd/</guid>
+      <description>Multiplications dominate the cost of deep networks, both in silicon area and in energy. Measured on a ZYNQ-7 ZC706 FPGA and on a 45nm ASIC, a single multiplication costs up to 196&amp;times; and 31&amp;times; more energy than the equivalent addition or bitwise shift, respectively&amp;mdash;a gap that widens further at lower precision. Computer architects have exploited this gap for decades: any multiplication by a constant can be rewritten as a sequence of bit-shifts and additions, which is exactly how multipliers are avoided in low-power digital signal processing hardware.</description>
+    </item>
+    
+    <item>
+      <title>Integrated Eye Tracking System</title>
+      <link>http://localhost:1313/blogs/eyecod/</link>
+      <pubDate>Sat, 18 Jun 2022 22:23:07 -0500</pubDate>
+      
+      <guid>http://localhost:1313/blogs/eyecod/</guid>
+      <description>240 FPS) eye tracking with a much smaller form-factor.&amp;ldquo;&amp;gt; Eye tracking is an essential human-machine interaction modality for VR/AR, enabling technologies like foveated rendering that require high throughput (&amp;gt;240 FPS), a small form-factor, and visual privacy. Existing systems fall short of these goals because of three bottlenecks: (1) bulky lens-based cameras impose a large form-factor and a high communication cost between camera and processor; (2) captured images contain a lot of redundancy, since only a small portion shows the human eye; and (3) state-of-the-art segmentation and gaze estimation DNNs require up to 16G FLOPs.</description>
+    </item>
+    
+    <item>
+      <title>Efficient DNN Training</title>
+      <link>http://localhost:1313/blogs/efficient-training/</link>
+      <pubDate>Fri, 02 Oct 2020 22:23:07 -0500</pubDate>
+      
+      <guid>http://localhost:1313/blogs/efficient-training/</guid>
+      <description>Model compression has been extensively studied for light-weight inference; popular means include network pruning, weight factorization, network quantization, and neural architecture search, among many others. On the other hand, the literature on efficient training appears to be much sparser: DNN training still requires us to fully train the over-parameterized neural network. Here we focus on reducing total training time and training energy costs, aiming at deployment on resource-constrained platforms, e.g., FPGAs, ASICs, mobile, and IoT devices.</description>
+    </item>
+    
+    <item>
+      <title>DNN Training Stages Understanding</title>
+      <link>http://localhost:1313/blogs/dnn-training/</link>
+      <pubDate>Sat, 21 Mar 2020 22:23:07 -0500</pubDate>
+      
+      <guid>http://localhost:1313/blogs/dnn-training/</guid>
+      <description>Recent works show that DNN training undergoes different stages, each showing different effects depending on the hyperparameter setting, which therefore warrants detailed explanation. Below, I aim to analyze and share a deep understanding of DNN training, especially from the following three perspectives:
+ On the optimization and generalization perspective On the frequency domain perspective What happens during the early phase of DNN training  On the Optimization and Generalization Perspective The connection between optimization and generalization of deep neural networks (DNN) is not fully understood.</description>
+    </item>
+    
+  </channel>
+</rss>

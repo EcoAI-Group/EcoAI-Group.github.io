@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Efficient DNN Training - EcoAI Lab</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Efficient DNN Training" />
+<meta property="og:description" content="Model compression has been extensively studied for light-weight inference; popular means include network pruning, weight factorization, network quantization, and neural architecture search, among many others. On the other hand, the literature on efficient training appears to be much sparser: DNN training still requires us to fully train the over-parameterized neural network. Here we focus on reducing total training time and training energy costs, aiming at deployment on resource-constrained platforms, e.g., FPGAs, ASICs, mobile, and IoT devices." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blogs/efficient-training/" />
+<meta property="article:published_time" content="2020-10-02T22:23:07-05:00"/>
+<meta property="article:modified_time" content="2020-10-02T22:23:07-05:00"/>
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Efficient DNN Training"/>
+<meta name="twitter:description" content="Model compression has been extensively studied for light-weight inference; popular means include network pruning, weight factorization, network quantization, and neural architecture search, among many others. On the other hand, the literature on efficient training appears to be much sparser: DNN training still requires us to fully train the over-parameterized neural network. Here we focus on reducing total training time and training energy costs, aiming at deployment on resource-constrained platforms, e.g., FPGAs, ASICs, mobile, and IoT devices."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/responsive-menu.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="header__row">
+			<div class="logo">
+				<a href="https://www.purdue.edu" target="_blank" class="logo__university">
+					<img src="/img/purdue-university-logo.png" alt="Purdue University" class="logo__university-img">
+				</a>
+				<span class="logo__separator"></span>
+				<a class="logo__link" href="/" title="EcoAI Lab" rel="home">
+					<img src="/img/ecoai.png" alt="EcoAI Lab" class="logo__ecoai-img">
+					
+				</a>
+			</div>
+			
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">Home</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">News</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/team/">Team</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/publications/">Publications</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/blogs/">Blogs</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/joinus/">Join Us</a>
+		</li>
+	</ul>
+</nav>
+
+		</div>
+	</div>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+    </script>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Efficient DNN Training</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-10-02T22:23:07">2020-10-02</time>
+</div>
+</div>
+		</header>
+<div class="content post__content clearfix">
+			<!-- ## Efficient DNN Training Summary -->
+
+<p><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@Haoran You">
+<meta name="twitter:creator" content="@Haoran You">
+<meta name="twitter:title" content="Efficient DNN Training">
+<meta name="twitter:description" content="Introduction to the three most recent works putting huge effort toward the efficient training goal.">
+<meta name="twitter:image" content="img/DNN.png"></p>
+
+<p>Model compression has been extensively studied for light-weight inference; popular means include network pruning, weight factorization, network quantization, and neural architecture search, among many others. On the other hand, the literature on efficient training appears to be much sparser: DNN training still requires us to fully train the over-parameterized neural network.
+Here we focus on reducing total training time and training energy costs, aiming at deployment on resource-constrained platforms, e.g., FPGAs, ASICs, mobile, and IoT devices. Below are three of the most recent works putting huge effort toward the efficient training goal.</p>
+
+<p><div align=center>
+    <img src="/img/DNN_source.png" alt="Trulli" style="width:50%;vertical-align: middle">
+    <span> <p></p> General DNN Training Scheme.</span>
+</div>
+<p></p></p>
+
+<hr />
+
+<ul>
+<li><strong><a href="https://arxiv.org/abs/1910.13349">E^2 Train (NeurIPS 2019)</a></strong>: Aiming to conduct more energy-efficient training of CNNs so as to enable on-device training, this paper strives to reduce the energy cost during training by dropping unnecessary computations from three complementary levels: stochastic mini-batch dropping <strong>on the data level</strong>; selective layer update <strong>on the model level</strong>; and sign prediction for low-cost, low-precision back-propagation <strong>on the algorithm level</strong>.
+<div align=center>
+<img src="/img/E2Train.png" hspace="0" alt="Trulli" style="width:75%">
+</div>
+<p style = "margin:10px"></p>
+<div align=left>
+<figcaption style="width:97%;float:center;">
+Fig.1 - An illustration of the E^2 Train framework. On the data level, we adopt stochastic mini-batch dropping to aggressively reduce the training cost by letting it see fewer mini-batches; on the model level, we dynamically skip a subset of layers during both feed-forward and back-propagation; on the algorithm level, we propose a novel predictive sign gradient descent (PSG) algorithm, which predicts the sign of gradients using low-cost bit-level predictors, thereby completely bypassing the costly full-gradient computation.
+</figcaption>
+</div>
+<br>
+Benefiting from the aforementioned three techniques, we are able to achieve <strong>over 80% total training energy cost savings</strong> measured on FPGA. For example, when training ResNet-74 on CIFAR-10, we achieve aggressive energy savings of &gt;90% and &gt;60%, while incurring a top-1 accuracy loss of only about 2% and 1.2%, respectively. When training ResNet-110 on CIFAR-100, over 84% training energy savings are achieved without degrading inference accuracy.</li>
+</ul>
+
+<hr />
+
+<ul>
+<li><strong><a href="https://arxiv.org/abs/1909.11957">EB Train (ICLR 2020 Spotlight)</a></strong>: This paper bridges the gap between the <a href="https://arxiv.org/abs/1803.03635">Lottery Ticket Hypothesis</a> and the efficient training goal. Since the identification of winning tickets still requires the costly train-prune-retrain process, limiting their practical benefits, this paper discovers for the first time that the winning tickets can be identified <strong>at the very early training stage (Early-Bird (EB) tickets)</strong> via low-cost training schemes, and proposes a mask distance metric that can be used to identify EB tickets with low computational overhead, without needing to know the true winning tickets that emerge after full training. Therefore, we can leverage the existence of EB tickets and the proposed mask distance to develop an efficient training method that first identifies EB tickets via low-cost schemes and then continues to train merely the EB tickets towards the target accuracy.
+<div align=justify>
+<img src="/img/EBTrain.png" alt="Trulli" hspace="100" style="width:65%">
+</div>
+<div align=left>
+<figcaption style="width:97%;float:center;">
+Fig.2 - A high-level overview of the difference between EB Train and existing progressive pruning and training.
+In particular, the progressive pruning and training scheme adopts a three-step routine of 1) training a large and dense model, 2) pruning it, and 3) then retraining the pruned model to restore performance, and these three steps can be iterated.
+The first step often dominates (e.g., occupying 75% of the training FLOPs) in terms of training energy and time costs.
+EB Train, on the other hand, replaces the aforementioned steps 1 and 2 with a lower-cost step of detecting the EB tickets.
+</figcaption>
+</div>
+<br>
+Experiments based on various deep networks and datasets validate: 1) the existence of EB tickets, and the effectiveness of the mask distance metric in efficiently identifying them; and 2) that the proposed efficient training via EB tickets can <strong>achieve up to 4.7× energy savings</strong> while maintaining comparable or even better accuracy, demonstrating a promising and easily adoptable method for tackling the often cost-prohibitive deep network training.</li>
+</ul>
+
+<hr />
+
+<ul>
+<li><strong><a href="https://arxiv.org/abs/2012.13113">FracTrain (NeurIPS 2020)</a></strong>: This paper proposes FracTrain, which integrates: 1) progressive fractional quantization, which gradually increases the bitwidth of activations, weights, and gradients such that it does not reach the precision of SOTA static quantized DNN training until the final training stage, and 2) dynamic fractional quantization, which assigns bitwidths to both the activations and gradients of each layer in an input-adaptive manner, for only &ldquo;fractionally&rdquo; updating layer parameters.
+<p style = "margin:10px"></p>
+<div align=justify>
+<img src="/img/fractrain.png" alt="Trulli" hspace="40" style="width:85%">
+</div>
+<p style = "margin:10px"></p>
+<div align=left>
+<figcaption style="width:97%;float:center;">
+Fig.3 - <strong>(a)</strong> A high-level view of the proposed PFQ vs. SOTA low-precision training, where PFQ adopts a four-stage precision schedule to gradually increase the precision of weights, activations, gradients, and errors up to that of the static baseline, which here employs 8-bit precision for both the forward and backward paths, denoted as FW-8/BW-8, and <strong>(b)</strong> the corresponding training loss trajectory.
+</figcaption>
+</div>
+<br>
+Extensive simulations and ablation studies (six models, four datasets, and three training settings including standard, adaptation, and fine-tuning) validate the effectiveness of FracTrain in reducing computational cost and hardware-quantified energy/latency of DNN training while achieving a comparable or better (-0.12% ~ +1.87%) accuracy. For example, when training ResNet-74 on CIFAR-10, FracTrain achieves <strong>77.6% and 53.5% computational cost and training latency savings</strong>, respectively, compared with the SOTA baseline, while achieving a comparable (-0.07%) accuracy.</li>
+</ul>
+
+<hr />
+
+<ul>
+<li><strong><a href="https://arxiv.org/abs/2010.12785">ShiftAddNet (NeurIPS 2020)</a></strong>: This paper presents ShiftAddNet, whose main inspiration is drawn from a common practice in energy-efficient hardware implementation, that is, multiplication can instead be performed with additions and logical bit-shifts. We leverage this idea to explicitly parameterize deep networks in this way, yielding a new type of deep network that involves only bit-shift and additive weight layers.
+<p style = "margin:10px"></p>
+<div align=justify>
+<img src="/img/shiftadd.png" alt="Trulli" hspace="85" style="width:75%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+<figcaption style="width:97%;float:center;">
+Fig.4 - Overview structure of ShiftAddNet.
+</figcaption>
+</div>
+<br>
+This hardware-inspired ShiftAddNet immediately leads to both energy-efficient inference and training, without compromising the expressive capacity compared to standard DNNs. The two complementary operation types (bit-shift and add) additionally enable finer-grained control of the model&rsquo;s learning capacity, leading to a more flexible trade-off between accuracy and (training) efficiency.
+Compared to existing DNNs or other multiplication-less models, ShiftAddNet aggressively <strong>reduces the hardware-quantified energy cost of DNN training and inference by over 80%</strong>, while offering comparable or better accuracies.</li>
+</ul>
+
+<p><br>
+<br></p>
+
+		</div>
+	</article>
+</main>
+
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2026 EcoAI Lab at Purdue University.
+		</div>
+	</div>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/responsive-menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

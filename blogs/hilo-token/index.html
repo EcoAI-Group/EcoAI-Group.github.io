@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Efficient Image Editing via HiLo-Token - EcoAI Lab</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Efficient Image Editing via HiLo-Token" />
+<meta property="og:description" content="Creative image editing features such as Photoshop&rsquo;s Remove Tool and Generative Fill are used by millions of customers and account for a large share of Photoshop and Lightroom traffic; within 28 days of the Photoshop v27.0 release, 1.1 million of 3.3 million users engaged with Generative Fill, generating 36.2 million interactions. Serving these features at scale is becoming more expensive as the field moves from convolution-based U-Nets to Diffusion Transformers (DiTs), which are roughly 6x costlier to serve in the cloud despite having 1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blogs/hilo-token/" />
+<meta property="article:published_time" content="2026-06-22T22:23:07-05:00"/>
+<meta property="article:modified_time" content="2026-06-22T22:23:07-05:00"/>
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Efficient Image Editing via HiLo-Token"/>
+<meta name="twitter:description" content="Creative image editing features such as Photoshop&rsquo;s Remove Tool and Generative Fill are used by millions of customers and account for a large share of Photoshop and Lightroom traffic; within 28 days of the Photoshop v27.0 release, 1.1 million of 3.3 million users engaged with Generative Fill, generating 36.2 million interactions. Serving these features at scale is becoming more expensive as the field moves from convolution-based U-Nets to Diffusion Transformers (DiTs), which are roughly 6x costlier to serve in the cloud despite having 1."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/responsive-menu.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="header__row">
+			<div class="logo">
+				<a href="https://www.purdue.edu" target="_blank" class="logo__university">
+					<img src="/img/purdue-university-logo.png" alt="Purdue University" class="logo__university-img">
+				</a>
+				<span class="logo__separator"></span>
+				<a class="logo__link" href="/" title="EcoAI Lab" rel="home">
+					<img src="/img/ecoai.png" alt="EcoAI Lab" class="logo__ecoai-img">
+					
+				</a>
+			</div>
+			
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">Home</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">News</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/team/">Team</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/publications/">Publications</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/blogs/">Blogs</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/joinus/">Join Us</a>
+		</li>
+	</ul>
+</nav>
+
+		</div>
+	</div>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+    </script>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Efficient Image Editing via HiLo-Token</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2026-06-22T22:23:07">2026-06-22</time>
+</div>
+</div>
+		</header>
+<div class="content post__content clearfix">
+			<!-- ## Efficient Image Editing via HiLo-Token Summary -->
+
+<p><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@Haoran You">
+<meta name="twitter:creator" content="@Haoran You">
+<meta name="twitter:title" content="Efficient Image Editing via HiLo-Token">
+<meta name="twitter:description" content="HiLo-Token allocates more tokens to high-frequency, context-rich regions and fewer tokens to low-frequency regions, achieving up to 3.13x DiT speedup for image editing without quality regression.">
+<meta name="twitter:image" content="img/hilo-token.png"></p>
+
+<p>Creative image editing features such as Photoshop&rsquo;s <a href="https://www.adobe.com/products/firefly/features/remove-object-from-photo.html">Remove Tool</a> and <a href="https://www.adobe.com/products/photoshop/generative-fill.html">Generative Fill</a> are used by millions of customers and account for a large share of Photoshop and Lightroom traffic; within 28 days of the Photoshop v27.0 release, 1.1 million of 3.3 million users engaged with Generative Fill, generating 36.2 million interactions. Serving these features at scale is becoming more expensive as the field moves from convolution-based U-Nets to Diffusion Transformers (DiTs), which are roughly 6x costlier to serve in the cloud despite having 1.8x fewer parameters. Below is a summary of <strong>HiLo-Token</strong>, an <a href="http://arxiv.org/abs/2606.13898">Adobe Tech Report (2026)</a> that tackles this serving cost problem through input-adaptive token compression.</p>
+
+<p><div align=center>
+    <img src="/img/hilo-top-figure.png" hspace="0" alt="Adobe GenAI editing features and AWS node savings" style="width:95%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.1 - (a) Representative GenAI features in Adobe products: the Remove Tool and Generative Fill, which invokes the Remove model when no text prompt is given. (b) Number of Amazon AWS p5.48xlarge nodes (8&times;H100) required to serve the Remove feature with and without HiLo-Token.
+    </figcaption>
+</div>
+<br></p>
+
+<p><strong>The Latency Bottleneck.</strong> HiLo-Token is built on top of MultiEdit (ME), a generalist image editing model fine-tuned from Adobe&rsquo;s Firefly Image 3 foundation model. ME supports a wide range of editing tasks—removal, insertion, replacement, relighting, text editing, and more—and is further fine-tuned into task-specific specialists such as the production Erase and Generative Fill models. As shown below, ME is composed of a VAE encoder/decoder, a DiT backbone, a refiner, and an optional text encoder, and is trained through a supervised fine-tuning stage followed by few-step distillation.</p>
+
+<p><div align=center>
+    <img src="/img/hilo-me-model.png" hspace="0" alt="ME model architecture" style="width:70%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.2 - ME model architecture, comprising a VAE, a DiT, a refiner, and an optional text encoder.
+    </figcaption>
+</div>
+<br></p>
+
+<p>Profiling ME on an A100-80GB GPU reveals that the DiT module dominates end-to-end latency, accounting for roughly 70% of total runtime across resolutions from 512² to 2048², even after distilling from 50 timesteps down to 8. Interestingly, the DiT is not the memory bottleneck at high resolution: its memory share drops from 61% at 512² to only 16% at 2048², while the VAE and refiner increasingly dominate memory instead.</p>
+
+<p><div align=center>
+    <img src="/img/hilo-profiling.png" hspace="0" alt="Latency and memory profiling of the ME model" style="width:70%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.3 - Latency and memory profiling of the ME model on an A100-80GB GPU across four resolutions. The DiT consistently dominates latency but becomes less significant for memory as resolution increases.
+    </figcaption>
+</div>
+<br></p>
+
+<p><strong>Why Tokens Can Be Compressed.</strong> Since latency is dominated by the DiT, and the DiT cost scales with the number of tokens it processes, the natural question is whether every token is actually needed. Analyzing real user editing masks shows that more than half of editing requests touch less than 10% of the image area, and 90% of requests edit no more than half the image; most masks are scattered or elongated holes rather than large regions. This means the DiT rarely needs to process the full image at full resolution&mdash;only the masked region and its relevant context.</p>
+
+<p><div align=center>
+    <img src="/img/hilo-mask-statistics.png" hspace="0" alt="User editing mask statistics" style="width:45%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.4 - User editing mask statistics. (a) Mask ratio distribution; (b) mask shape category distribution.
+    </figcaption>
+</div>
+<br></p>
+
+<p><strong>The HiLo-Token Framework.</strong> Building on <a href="https://arxiv.org/abs/2404.12382">LazyDiffusion</a>, which by default keeps only tokens inside a dilated mask, HiLo-Token adds two parallel branches to recover the context that dilation alone discards, while keeping token selection cheap and input-adaptive:</p>
+
+<ol>
+<li><strong>Low-frequency tokens</strong>: the input image is aggressively downsampled by 16&times; and encoded through the VAE and a low-frequency patch-embedding layer, producing a small number of tokens that capture blurry but globally consistent structure. Because there are so few of them, all are retained.</li>
+<li><strong>High-frequency tokens</strong>: outside the dilated mask, a normalized spatial-frequency map is computed using only two Sobel convolutions (no learned context encoder), then pooled at the token-grid resolution to select coherent, high-frequency regions rather than scattered pixels. This avoids relying on attention-based importance, which can fail when the relevant content—like the occluded half of a symmetric pattern—has not yet been generated at early diffusion steps.</li>
+</ol>
+
+<p>The selected high-frequency tokens are concatenated with the low-frequency tokens to form the final HiLo-Token representation fed to the DiT. The whole selection process costs roughly 10 ms, compared to the cost of a full transformer-based context encoder it replaces.</p>
+
+<p><div align=center>
+    <img src="/img/hilo-framework.png" hspace="0" alt="HiLo-Token framework overview" style="width:80%">
+</div>
+<p style = "margin:-85px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.5 - Overview of the HiLo-Token framework.
+    </figcaption>
+</div>
+<br></p>
+
+<p>The figure below compares the token selection maps of LazyDiffusion and HiLo-Token on images with complex textures or occluded symmetric patterns. White regions denote selected tokens; HiLo-Token&rsquo;s frequency-aware selection captures the symmetric high-frequency structure that correlation-based selection misses.</p>
+
+<p><div align=center>
+    <img src="/img/hilo-example.jpg" hspace="0" alt="Token selection comparison between LazyDiffusion and HiLo-Token" style="width:75%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.6 - Token selection comparison on images with complex textures or occluded symmetric high-frequency patterns. White regions denote selected tokens.
+    </figcaption>
+</div>
+<br></p>
+
+<p><strong>Results.</strong> HiLo-Token is applied during supervised fine-tuning of the ME specialists and remains compatible with the subsequent DMD-style few-step distillation, which minimizes the KL divergence $D_{KL}(p_s | p_t)$ between the student and teacher output distributions. On 92 representative editing cases split into small, medium, and large mask-ratio groups (average ratios of 6.38%, 15.92%, and 35.36%), HiLo-Token accelerates the DiT by 1.67&times;, 2.59&times;, and 3.13&times;, respectively, translating to end-to-end speedups of 1.33&times;, 1.66&times;, and 1.77&times;.</p>
+
+<p><div align=center>
+    <img src="/img/hilo-speedup.png" hspace="0" alt="DiT latency speedup across mask-ratio groups" style="width:45%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.7 - Latency speedup of the ME model with HiLo-Token across three ranges of mask ratios.
+    </figcaption>
+</div>
+<br></p>
+
+<p>A user study comparing removal, generative fill, and generative expand specialists with and without HiLo-Token shows comparable editing quality, with tie rates of 48%, 70%, and 81% across the three tasks, and no consistent quality regression. HiLo-Token is also fully compatible with FP8 quantization (up to 40% additional latency reduction) and further distillation to 5 steps (an additional 37.5% reduction), and these gains translate directly into production: serving the Remove feature with HiLo-Token reduces the number of required AWS p5.48xlarge nodes by 33%.</p>
+
+<p><div align=center>
+    <img src="/img/hilo-user-study.png" hspace="0" alt="User study results with and without HiLo-Token" style="width:40%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.8 - User study results with and without HiLo-Token across removal, generative fill, and generative expand tasks.
+    </figcaption>
+</div>
+<br></p>
+
+<p><div align=center>
+    <img src="/img/hilo-more-examples.jpg" hspace="0" alt="Representative Remove Tool and Generative Fill results with HiLo-Token" style="width:80%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.9 - Representative Remove Tool and Generative Fill results with HiLo-Token applied.
+    </figcaption>
+</div>
+<br></p>
+
+<p>In short, HiLo-Token shows that principled, input-adaptive token pruning&mdash;guided by simple frequency cues rather than learned attention&mdash;can cut DiT serving costs substantially without sacrificing editing quality, and it is already powering the Remove Tool and Generative Fill experiences in the latest Photoshop.</p>
+
+<p><br>
+<br></p>
+
+		</div>
+	</article>
+</main>
+
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2026 EcoAI Lab at Purdue University.
+		</div>
+	</div>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/responsive-menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

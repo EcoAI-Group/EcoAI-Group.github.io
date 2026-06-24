@@ -1,0 +1,333 @@
+/**
+ * Responsive menu and layout styles
+ * Fixes for zoom levels and narrow screen widths
+ */
+
+/* ========================================
+   HEADER / TOP BAR RESPONSIVE FIXES
+   ======================================== */
+
+/* Ensure header row doesn't break at intermediate widths */
+.header__row {
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+/* Logo responsive sizing */
+.logo {
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.logo__university-img,
+.logo__ecoai-img {
+    max-height: 50px;
+    height: auto;
+    width: auto;
+}
+
+/* Menu button styling for consistency */
+.menu__btn-title {
+    white-space: nowrap;
+}
+
+/* Responsive header at various zoom levels / widths */
+@media screen and (max-width: 1100px) {
+    .logo__university-img,
+    .logo__ecoai-img {
+        max-height: 45px;
+    }
+    
+    .logo__separator {
+        margin: 0 15px;
+        height: 35px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .logo__university-img,
+    .logo__ecoai-img {
+        max-height: 40px;
+    }
+    
+    .logo__separator {
+        margin: 0 12px;
+        height: 32px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .header__row {
+        justify-content: space-between;
+    }
+    
+    .logo__university-img,
+    .logo__ecoai-img {
+        max-height: 35px;
+    }
+    
+    .logo__separator {
+        margin: 0 10px;
+        height: 28px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .header__row {
+        padding: 8px 3% !important;
+    }
+    
+    .logo__university-img,
+    .logo__ecoai-img {
+        max-height: 30px;
+    }
+    
+    .logo__separator {
+        margin: 0 6px;
+        height: 24px;
+    }
+    
+    .logo__university {
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .logo__university-img,
+    .logo__ecoai-img {
+        max-height: 25px;
+    }
+    
+    .logo__separator {
+        margin: 0 4px;
+        height: 20px;
+    }
+}
+
+/* ========================================
+   HOMEPAGE CONTENT RESPONSIVE FIXES
+   ======================================== */
+
+/* Ensure bio-row doesn't overflow */
+.bio-row {
+    overflow: hidden;
+}
+
+.bio-text {
+    min-width: 0; /* Allow text to shrink properly in flex */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.bio-photo {
+    flex-shrink: 0;
+}
+
+/* Force stacking at narrower widths to prevent text overlap */
+@media screen and (max-width: 1000px) {
+    .bio-row {
+        gap: 35px;
+    }
+    
+    .bio-photo {
+        flex: 0 0 240px;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .bio-row {
+        flex-direction: column-reverse !important;
+        gap: 25px;
+    }
+    
+    .bio-photo {
+        flex: 0 0 auto !important;
+        max-width: 260px;
+        margin: 0 auto;
+    }
+    
+    .bio-text {
+        text-align: left;
+    }
+}
+
+/* Hero section responsive fixes */
+@media screen and (max-width: 600px) {
+    .hero-content {
+        padding-top: 80px !important;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.8rem !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .hero-content .prof-title,
+    .hero-content .prof-dept {
+        font-size: 1rem !important;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .hero-content h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .hero-content .prof-title,
+    .hero-content .prof-dept {
+        font-size: 0.9rem !important;
+    }
+    
+    .hero-icons a {
+        margin: 0 6px;
+    }
+    
+    .hero-icons svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+/* News grid responsive */
+@media screen and (max-width: 500px) {
+    .news-card {
+        padding: 20px;
+    }
+    
+    .news-card .news-title {
+        font-size: 1.1rem;
+    }
+    
+    .news-card .news-desc {
+        font-size: 16px;
+    }
+}
+
+/* ========================================
+   POST NAVIGATION (PREV/NEXT) OVERRIDES
+   ======================================== */
+
+.post-nav {
+    border-top: 2px solid #D5A10E;
+    border-bottom: none;
+    margin-top: 30px;
+}
+
+.post-nav__caption {
+    color: #D5A10E;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+.post-nav__link:hover .post-nav__post-title {
+    color: #D5A10E;
+}
+
+.post-nav__post-title {
+    color: #333;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+/* ========================================
+   TAGS OVERRIDES
+   ======================================== */
+
+.tags__item {
+    background: #333;
+    border-radius: 4px;
+}
+
+.tags__item:hover {
+    background: #D5A10E;
+}
+
+/* ========================================
+   MENU RESPONSIVE STYLES
+   When .menu--compact is added, force mobile menu behavior
+   ======================================== */
+
+/* Default: Hide menu button and show horizontal menu for wider screens */
+@media screen and (min-width: 767px) {
+    /* When NOT in compact mode, show horizontal menu */
+    .menu:not(.menu--compact) .menu__btn {
+        display: none;
+    }
+
+    .menu:not(.menu--compact) .menu__list,
+    .js .menu:not(.menu--compact) .menu__list {
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap; /* Prevent wrapping - key change */
+        visibility: visible;
+        border: 0;
+        transform: none;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: none;
+        min-width: auto;
+        width: auto;
+        right: auto;
+        top: auto;
+    }
+
+    .js .menu:not(.menu--compact) .menu__list .menu__link {
+        color: #000;
+        padding: 10px 15px;
+    }
+
+    .js .menu:not(.menu--compact) .menu__list .menu__link:hover {
+        background: transparent;
+        color: #D5A10E;
+    }
+
+    .menu:not(.menu--compact) .menu__item {
+        border-left: 1px solid rgba(0, 0, 0, .1);
+    }
+
+    /* COMPACT MODE: Force mobile menu behavior even on wider screens */
+    .menu.menu--compact .menu__btn {
+        display: block;
+    }
+
+    .menu.menu--compact {
+        position: relative;
+    }
+
+    .js .menu.menu--compact .menu__list {
+        position: absolute;
+        z-index: 1000;
+        width: auto;
+        right: 0;
+        top: 100%;
+        visibility: hidden;
+        transform: scaleY(0);
+        transform-origin: top right;
+        background: rgba(42, 42, 42, 0.95);
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        min-width: 150px;
+        display: block;
+    }
+
+    .js .menu.menu--compact .menu__list--active {
+        visibility: visible;
+        transform: scaleY(1);
+    }
+
+    .js .menu.menu--compact .menu__list .menu__link {
+        color: #fff;
+        display: block;
+        padding: 12px 20px;
+    }
+
+    .js .menu.menu--compact .menu__list .menu__link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+
+    .menu.menu--compact .menu__item {
+        border-left: none;
+    }
+}

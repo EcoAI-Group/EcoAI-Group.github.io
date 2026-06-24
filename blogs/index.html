@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Blog - EcoAI Lab</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Blog" />
+<meta property="og:description" content="EcoAI Lab Website" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://localhost:1313/blogs/" />
+
+<meta property="og:updated_time" content="2026-06-22T22:23:07-05:00"/>
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Blog"/>
+<meta name="twitter:description" content="EcoAI Lab Website"/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="alternate" type="application/rss+xml" href="/blogs/index.xml" title="EcoAI Lab">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/responsive-menu.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="header__row">
+			<div class="logo">
+				<a href="https://www.purdue.edu" target="_blank" class="logo__university">
+					<img src="/img/purdue-university-logo.png" alt="Purdue University" class="logo__university-img">
+				</a>
+				<span class="logo__separator"></span>
+				<a class="logo__link" href="/" title="EcoAI Lab" rel="home">
+					<img src="/img/ecoai.png" alt="EcoAI Lab" class="logo__ecoai-img">
+					
+				</a>
+			</div>
+			
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">Home</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">News</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/team/">Team</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/publications/">Publications</a>
+		</li>
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/blogs/">Blogs</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/joinus/">Join Us</a>
+		</li>
+	</ul>
+</nav>
+
+		</div>
+	</div>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+    </script>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main list" role="main">
+  <div class="content main__content clearfix">
+    <style>
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+.section-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #333;
+  display: inline-block;
+  position: relative;
+  padding-bottom: 15px;
+}
+.section-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #D5A10E;
+}
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 60px;
+}
+.blog-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+.blog-card-img-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  display: flex;
+  align-items: center; /* vertically center the image inside the fixed-ratio box */
+  justify-content: center;
+  background: #fff;
+}
+.blog-card-img {
+  width: 100%; /* width always fills the card, never cropped horizontally */
+  height: auto; /* height scales with the image's own ratio; any overflow is clipped top/bottom by the wrap, centered */
+  display: block;
+}
+.blog-card-content {
+  padding: 20px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.blog-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.blog-card-title a {
+  color: #333;
+  text-decoration: none;
+}
+.blog-card-title a:hover {
+  color: #D5A10E;
+}
+.blog-card-date {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 12px;
+}
+.blog-card-abstract {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.blog-card-tags {
+  margin-top: auto;
+  padding-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.blog-card-tag {
+  background: rgba(213, 161, 14, 0.15);
+  color: #9c7300;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+@media (max-width: 1000px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 650px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<div class="section-header">
+  <h2>Research Blogs</h2>
+</div>
+
+<div class="blog-grid">
+<div class="blog-card" >
+<div class="blog-card-img-wrap">
+<img src="/img/hilo-token.png" alt="HiLo-Token" class="blog-card-img">
+</div>
+<div class="blog-card-content">
+<div class="blog-card-title"><a href="/blogs/hilo-token/">Efficient Image Editing via HiLo-Token</a></div>
+<div class="blog-card-date">June 22, 2026</div>
+<div class="blog-card-abstract">HiLo-Token allocates more tokens to high-frequency, context-rich regions and fewer tokens to low-frequency regions for DiT-based image editing, reducing serving costs by one-third without quality regression.</div>
+<div class="blog-card-tags">
+<span class="blog-card-tag">Efficient Inference</span>
+<span class="blog-card-tag">Image Editing</span>
+<span class="blog-card-tag">Diffusion Model</span>
+</div>
+</div>
+</div>
+<div class="blog-card" >
+<div class="blog-card-img-wrap">
+<img src="/img/shiftadd-cover.png" alt="Hardware-Inspired ShiftAddNets" class="blog-card-img">
+</div>
+<div class="blog-card-content">
+<div class="blog-card-title"><a href="/blogs/shiftadd/">Hardware-Inspired ShiftAddNets</a></div>
+<div class="blog-card-date">September 25, 2024</div>
+<div class="blog-card-abstract">A series of hardware-inspired, multiplication-less networks-ShiftAddNet, ShiftAddNAS, ShiftAddViT, and ShiftAddLLM-that reparameterize CNNs, ViTs, and LLMs with bitwise shifts and adds for large energy and latency savings.</div>
+<div class="blog-card-tags">
+<span class="blog-card-tag">Efficient Inference</span>
+<span class="blog-card-tag">ViTs / LLMs</span>
+<span class="blog-card-tag">Energy Saving</span>
+</div>
+</div>
+</div>
+<div class="blog-card" >
+<div class="blog-card-img-wrap">
+<img src="/img/i-FlatCam-demo.gif" alt="EyeCoD" class="blog-card-img">
+</div>
+<div class="blog-card-content">
+<div class="blog-card-title"><a href="/blogs/eyecod/">Integrated Eye Tracking System</a></div>
+<div class="blog-card-date">June 18, 2022</div>
+<div class="blog-card-abstract">EyeCoD pairs lensless FlatCams with a predict-then-focus algorithm and a dedicated accelerator, achieving 10.95x, 3.21x, and 12.85x speedups over CPUs, GPUs, and a prior-art eye tracking processor.</div>
+<div class="blog-card-tags">
+<span class="blog-card-tag">Eye Tracking</span>
+<span class="blog-card-tag">Algorithm-Hardware Co-Design</span>
+</div>
+</div>
+</div>
+<div class="blog-card" >
+<div class="blog-card-img-wrap">
+<img src="/img/DNN_source.png" alt="Efficient Training" class="blog-card-img">
+</div>
+<div class="blog-card-content">
+<div class="blog-card-title"><a href="/blogs/efficient-training/">Efficient DNN Training</a></div>
+<div class="blog-card-date">October 2, 2020</div>
+<div class="blog-card-abstract">Summary of efficient DNN training methods including E²Train, EB Train, FracTrain, and ShiftAddNet. Achieving over 80% training energy cost savings through data-level, model-level, and algorithm-level optimizations.</div>
+<div class="blog-card-tags">
+<span class="blog-card-tag">Efficient Training</span>
+<span class="blog-card-tag">Energy Saving</span>
+</div>
+</div>
+</div>
+<div class="blog-card" >
+<div class="blog-card-img-wrap">
+<img src="/img/break-even-point-trajectory.png" alt="DNN Training" class="blog-card-img">
+</div>
+<div class="blog-card-content">
+<div class="blog-card-title"><a href="/blogs/dnn-training/">DNN Training Stages Understanding</a></div>
+<div class="blog-card-date">March 21, 2020</div>
+<div class="blog-card-abstract">Recent works show that DNN training undergoes different stages, each stage shows different effects given a hyper-parameter setting. Analysis from optimization, generalization, and frequency domain perspectives.</div>
+<div class="blog-card-tags">
+<span class="blog-card-tag">DNN Training</span>
+<span class="blog-card-tag">Interpretability</span>
+</div>
+</div>
+</div>
+</div>
+
+  </div>
+</main>
+
+			</div>
+			
+
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2026 EcoAI Lab at Purdue University.
+		</div>
+	</div>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/responsive-menu.js"></script><script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

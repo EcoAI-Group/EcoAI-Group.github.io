@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Hardware-Inspired ShiftAddNets - EcoAI Lab</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Hardware-Inspired ShiftAddNets" />
+<meta property="og:description" content="Multiplications dominate the cost of deep networks, both in silicon area and in energy. Measured on a ZYNQ-7 ZC706 FPGA and on a 45nm ASIC, a single multiplication costs up to 196&times; and 31&times; more energy than the equivalent addition or bitwise shift, respectively&mdash;a gap that widens further at lower precision. Computer architects have exploited this gap for decades: any multiplication by a constant can be rewritten as a sequence of bit-shifts and additions, which is exactly how multipliers are avoided in low-power digital signal processing hardware." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blogs/shiftadd/" />
+<meta property="article:published_time" content="2024-09-25T08:23:07-05:00"/>
+<meta property="article:modified_time" content="2024-09-25T08:23:07-05:00"/>
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hardware-Inspired ShiftAddNets"/>
+<meta name="twitter:description" content="Multiplications dominate the cost of deep networks, both in silicon area and in energy. Measured on a ZYNQ-7 ZC706 FPGA and on a 45nm ASIC, a single multiplication costs up to 196&times; and 31&times; more energy than the equivalent addition or bitwise shift, respectively&mdash;a gap that widens further at lower precision. Computer architects have exploited this gap for decades: any multiplication by a constant can be rewritten as a sequence of bit-shifts and additions, which is exactly how multipliers are avoided in low-power digital signal processing hardware."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/responsive-menu.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="header__row">
+			<div class="logo">
+				<a href="https://www.purdue.edu" target="_blank" class="logo__university">
+					<img src="/img/purdue-university-logo.png" alt="Purdue University" class="logo__university-img">
+				</a>
+				<span class="logo__separator"></span>
+				<a class="logo__link" href="/" title="EcoAI Lab" rel="home">
+					<img src="/img/ecoai.png" alt="EcoAI Lab" class="logo__ecoai-img">
+					
+				</a>
+			</div>
+			
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">Home</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">News</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/team/">Team</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/publications/">Publications</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/blogs/">Blogs</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/joinus/">Join Us</a>
+		</li>
+	</ul>
+</nav>
+
+		</div>
+	</div>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+    </script>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Hardware-Inspired ShiftAddNets</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2024-09-25T08:23:07">2024-09-25</time>
+</div>
+</div>
+		</header>
+<div class="content post__content clearfix">
+			<p><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@Haoran You">
+<meta name="twitter:creator" content="@Haoran You">
+<meta name="twitter:title" content="Hardware-Inspired ShiftAddNets">
+<meta name="twitter:description" content="A unified story of ShiftAddNet, ShiftAddNAS, ShiftAddViT, and ShiftAddLLM-reparameterizing CNNs, hybrid NAS networks, ViTs, and LLMs with bitwise shifts and adds instead of multiplications.">
+<meta name="twitter:image" content="img/shiftadd-cover.png"></p>
+
+<p>Multiplications dominate the cost of deep networks, both in silicon area and in energy. Measured on a ZYNQ-7 ZC706 FPGA and on a 45nm ASIC, a single multiplication costs up to 196&times; and 31&times; more energy than the equivalent addition or bitwise shift, respectively&mdash;a gap that widens further at lower precision. Computer architects have exploited this gap for decades: any multiplication by a constant can be rewritten as a sequence of bit-shifts and additions, which is exactly how multipliers are avoided in low-power digital signal processing hardware. The series of work below, spanning five years and four papers, asks how far this hardware &ldquo;shortcut&rdquo; can be pushed into deep learning&mdash;starting from CNNs trained from scratch, all the way to today&rsquo;s large language models (LLMs) reparameterized with no retraining at all.</p>
+
+<p><div align=center>
+    <img src="/img/shiftadd-unit-energy.png" hspace="0" alt="Energy cost of multiplication vs. addition vs. bitwise shift, measured on FPGA and ASIC" style="width:60%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.1 - Unit energy of multiplication, addition, and bitwise shift across FP32/FIX32/FIX8 formats, measured on a ZYNQ-7 ZC706 FPGA (left) and a 45nm ASIC (right). Shift-and-add can save up to 196&times; and 31&times; energy over multiplication, respectively.
+    </figcaption>
+</div>
+<br></p>
+
+<p><strong>Combining shift and add: ShiftAddNet.</strong> Before ShiftAddNet, two lines of work had already tried to remove multiplication from CNNs, each leaning on a single primitive. DeepShift replaced multiplications with bitwise shifts, but shifts can only represent powers of two, so they only <em>approximate</em> the original mapping and lose expressiveness. AdderNet went the other way and replaced all multiplications with additions alone; additions are surjective and don&rsquo;t lose expressiveness in principle, but reproducing a multiplicative mapping out of pure additions is parameter-inefficient. <strong><a href="https://arxiv.org/abs/2010.12785">ShiftAddNet (NeurIPS 2020)</a></strong> combines both primitives instead of picking one: every convolution and fully-connected layer is reparameterized into a cascade of a bit-shift layer followed by an add layer, trained end-to-end from scratch.
+<div align=center>
+    <img src="/img/shiftadd.png" hspace="0" alt="Overview structure of ShiftAddNet" style="width:70%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.2 - Overview structure of ShiftAddNet: a cascade of a bit-shift layer and an additive layer replaces each convolution.
+    </figcaption>
+</div>
+<br>
+The two primitives turn out to be naturally complementary: shifts provide coarse-grained, large feature-scale adjustments, while adds provide fine-grained corrections&mdash;together they recover the full expressiveness that shift-only or add-only networks lose. This combination lets ShiftAddNet achieve up to 90% and 82.8% energy savings over AdderNet and DeepShift, respectively, at comparable or better accuracy, and the savings were measured with real on-board energy numbers from a ZYNQ-7 FPGA rather than simulation&mdash;<strong>reducing the hardware-quantified energy cost of training and inference by over 80%</strong> compared to standard DNNs.</p>
+
+<p><strong>Learning where to apply it: ShiftAddNAS.</strong> ShiftAddNet, like AdderNet before it, is still a pure multiplication-free network, and pure multiplication-free networks consistently under-perform their full-precision counterparts in accuracy on harder vision and language tasks&mdash;multiplications are simply more expressive than any fixed combination of shifts and adds. <strong><a href="https://arxiv.org/abs/2205.08119">ShiftAddNAS (ICML 2022)</a></strong> reframes the question: rather than replacing every multiplication, why not let neural architecture search decide <em>where</em> it&rsquo;s worth keeping multiplication and where shift-and-add suffices? It builds a hybrid search space mixing multiplication-based operators (convolution, attention) with multiplication-free ones (shift, add), searched together with a new weight-sharing strategy. This is necessary because the weights of multiplicative and additive operators follow different distributions (Gaussian vs. Laplacian)&mdash;sharing weights naively across them either hurts accuracy or blows up the search space. Searched on both CNNs and Transformers, the resulting hybrid networks achieve up to <strong>7.7% higher accuracy</strong> on vision tasks and <strong>4.9 better BLEU score</strong> on machine translation than state-of-the-art alternatives, while still delivering up to <strong>93% energy savings</strong> and <strong>69% latency reduction</strong>&mdash;the first sign that adaptively mixing multiplication with shift-and-add, rather than removing it outright, is the better trade-off.</p>
+
+<p><strong>Skipping pretraining: ShiftAddViT.</strong> ShiftAddNet and ShiftAddNAS both assume you can afford to train (or search) a network from scratch. That assumption breaks down for Vision Transformers (ViTs), where pretraining a strong backbone is far more expensive than training a small CNN, and where cost is split between two very different components&mdash;attention&rsquo;s MatMuls and the MLPs. <strong><a href="https://arxiv.org/abs/2306.06446">ShiftAddViT (NeurIPS 2023)</a></strong> reparameterizes <em>pre-trained</em> ViTs directly, with no training from scratch. It treats attention and MLPs differently: queries and keys are first mapped into binary codes in Hamming space, which lets the QK and attention-value MatMuls be reparameterized into additive kernels at essentially no accuracy cost; the remaining MLPs and linear layers are reparameterized with shift kernels, which is cheap but&mdash;echoing ShiftAddNAS&rsquo;s lesson&mdash;hurts accuracy if applied uniformly. The fix is again adaptive, just at a finer grain: a mixture-of-experts (MoE) framework with a latency-aware load-balancing loss routes each <em>token</em> to either a multiplication expert or a shift expert depending on how sensitive that token is, so the decision of &ldquo;where multiplication is worth it&rdquo; is now made per-token at inference time rather than per-operator at search time.
+<div align=center>
+    <img src="/img/shiftaddvit-overview.png" hspace="0" alt="ShiftAddViT architecture overview" style="width:80%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.3 - Overview of ShiftAddViT: (a) input images are patchified into tokens; (b) attention MatMuls are reparameterized into additive kernels via binary-coded queries and keys; $($c$)$ the remaining MLPs use a mixture-of-experts framework that routes each token to either a multiplication or a shift expert.
+    </figcaption>
+</div>
+<br>
+Implemented with custom TVM kernels for practical GPU deployment, ShiftAddViT achieves up to <strong>5.18&times; latency reduction on GPUs</strong> and <strong>42.9% energy savings</strong> across various 2D/3D Transformer-based vision tasks, while maintaining comparable or even higher accuracy than the original ViTs&mdash;all without training from scratch.</p>
+
+<p><strong>Going fully post-training, at LLM scale: ShiftAddLLM.</strong> Even the light fine-tuning ShiftAddViT relies on to train its MoE router becomes impractical at LLM scale, where a single fine-tuning run can cost as much as the original pre-training. <strong><a href="https://arxiv.org/abs/2406.05981">ShiftAddLLM (NeurIPS 2024)</a></strong> pushes the idea to its limit: reparameterizing pretrained LLMs into shift-and-add operations entirely post-training, with no fine-tuning or retraining step at all. Each weight matrix is quantized into binary matrices with group-wise scaling factors, turning multiplications into shift-and-add operations that are executed efficiently via LUT-based query-and-add kernels.
+<div align=center>
+    <img src="/img/shiftaddllm-overview.png" hspace="0" alt="ShiftAddLLM method overview" style="width:80%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.4 - Overview of ShiftAddLLM&rsquo;s post-training reparameterization: (a)-(b) prior weight-only quantization vs. ShiftAddLLM&rsquo;s shift-and-add reparameterization with binary-coded weights and scaling factors; $($c$)$-$($d$)$ the FP16 shift operation and LUT-based query-and-add mechanism used to execute the reparameterized weights efficiently.
+    </figcaption>
+</div>
+<br>
+With no retraining available to recover accuracy, ShiftAddLLM moves the &ldquo;where to be adaptive&rdquo; decision once more&mdash;this time to the bit level. A multi-objective optimization jointly minimizes weight and output-activation reconstruction error rather than weight error alone, and an automated, mixed bit-allocation strategy assigns more bits to layers and blocks that are more sensitive to reparameterization and fewer bits to the rest, the same hybrid principle as ShiftAddNAS and ShiftAddViT, now expressed as <em>how many bits</em> rather than <em>which operator</em>. Across five LLM families (including OPT, LLaMA-2, LLaMA-3, and Gemma) and eight tasks, ShiftAddLLM consistently dominates the perplexity-latency trade-off, improving average perplexity by <strong>5.6 and 22.7 points</strong> over the most competitive quantized LLMs at comparable or lower latency at 3-bit and 2-bit precision, respectively.
+<div align=center>
+    <img src="/img/shiftaddllm-results.png" hspace="0" alt="ShiftAddLLM perplexity vs. latency results" style="width:90%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.5 - Perplexity vs. latency trade-offs of ShiftAddLLM (green) against OPTQ, LUT-GEMM, and AWQ across OPT, LLaMA-<sup>2</sup>&frasl;<sub>3</sub>, and Gemma at 2-3 bit precision. ShiftAddLLM consistently achieves lower perplexity at comparable or lower latency.
+    </figcaption>
+</div>
+<br></p>
+
+<p><strong>Summary.</strong> Across four papers and four eras of network design&mdash;training a CNN from scratch, searching hybrid architectures with NAS, lightly fine-tuning a pretrained ViT, and reparameterizing a pretrained LLM with no retraining whatsoever&mdash;the same two ingredients keep reappearing: bitwise shifts and adds as multiplication&rsquo;s cheap substitutes, and an adaptive mechanism that decides where the substitution is worth making, whether that&rsquo;s per-operator (ShiftAddNAS&rsquo;s architecture search), per-token (ShiftAddViT&rsquo;s mixture of experts), or per-bit (ShiftAddLLM&rsquo;s mixed allocation). The end-to-end payoff compounds: applied to a 70B-parameter LLaMA-2 model, this same shift-and-add reparameterization cuts whole-model energy by 87.4% over FP16.
+<div align=center>
+    <img src="/img/shiftadd-cover.png" hspace="0" alt="Whole-model energy breakdown for OPT-66B and LLaMA-2-70B" style="width:55%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.6 - Whole-model energy breakdown for OPT-66B and LLaMA-2-70B, FP16 vs. ShiftAdd reparameterization.
+    </figcaption>
+</div>
+<br>
+We are also working on bringing all four methods together under <a href="https://github.com/GATECH-EIC/torchshiftadd">TorchShiftAdd</a>, for building energy-efficient, multiplication-less models.</p>
+
+<p><br>
+<br></p>
+
+		</div>
+	</article>
+</main>
+
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2026 EcoAI Lab at Purdue University.
+		</div>
+	</div>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/responsive-menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

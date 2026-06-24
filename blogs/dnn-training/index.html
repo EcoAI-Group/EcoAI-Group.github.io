@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>DNN Training Stages Understanding - EcoAI Lab</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="DNN Training Stages Understanding" />
+<meta property="og:description" content="Recent works show that DNN training undergoes different stages, each showing different effects depending on the hyperparameter setting, which therefore warrants detailed explanation. Below, I aim to analyze and share a deep understanding of DNN training, especially from the following three perspectives:
+ On the optimization and generalization perspective On the frequency domain perspective What happens during the early phase of DNN training  On the Optimization and Generalization Perspective The connection between optimization and generalization of deep neural networks (DNN) is not fully understood." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/blogs/dnn-training/" />
+<meta property="article:published_time" content="2020-03-21T22:23:07-05:00"/>
+<meta property="article:modified_time" content="2020-03-21T22:23:07-05:00"/>
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DNN Training Stages Understanding"/>
+<meta name="twitter:description" content="Recent works show that DNN training undergoes different stages, each showing different effects depending on the hyperparameter setting, which therefore warrants detailed explanation. Below, I aim to analyze and share a deep understanding of DNN training, especially from the following three perspectives:
+ On the optimization and generalization perspective On the frequency domain perspective What happens during the early phase of DNN training  On the Optimization and Generalization Perspective The connection between optimization and generalization of deep neural networks (DNN) is not fully understood."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/responsive-menu.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="header__row">
+			<div class="logo">
+				<a href="https://www.purdue.edu" target="_blank" class="logo__university">
+					<img src="/img/purdue-university-logo.png" alt="Purdue University" class="logo__university-img">
+				</a>
+				<span class="logo__separator"></span>
+				<a class="logo__link" href="/" title="EcoAI Lab" rel="home">
+					<img src="/img/ecoai.png" alt="EcoAI Lab" class="logo__ecoai-img">
+					
+				</a>
+			</div>
+			
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">Home</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">News</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/team/">Team</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/publications/">Publications</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/blogs/">Blogs</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/joinus/">Join Us</a>
+		</li>
+	</ul>
+</nav>
+
+		</div>
+	</div>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+    </script>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">DNN Training Stages Understanding</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-03-21T22:23:07">2020-03-21</time>
+</div>
+</div>
+		</header>
+<div class="content post__content clearfix">
+			
+
+<!-- # Analysis Shed Light on DNN Training -->
+
+<p>Recent works show that DNN training undergoes different stages, each showing different effects depending on the hyperparameter setting, which therefore warrants detailed explanation.
+Below, I aim to analyze and share a deep understanding of DNN training, especially from the following three perspectives:</p>
+
+<ol>
+<li>On the optimization and generalization perspective</li>
+<li>On the frequency domain perspective</li>
+<li>What happens during the early phase of DNN training</li>
+</ol>
+
+<hr />
+
+<h2 id="on-the-optimization-and-generalization-perspective">On the Optimization and Generalization Perspective</h2>
+
+<p>The connection between optimization and generalization of deep neural networks (DNN) is not
+fully understood. For instance, using a large initial learning rate often improves generalization,
+which can come at the expense of the initial training loss reduction. In this context, four works aimed at understanding the connection between optimization and generalization are discussed below.</p>
+
+<ul>
+<li><p><strong><a href="https://arxiv.org/abs/2002.10376">The Two Regimes of Deep Network Training</a></strong>: The learning rate schedule has a major impact on the performance of deep learning models. Instead of relying on a heuristic choice, this paper aims to understand the effects of different learning rate schedules and thereby develop a more principled way to select one. Specifically, two regimes are discussed:
+<p style = "margin:-15px"></p>
+&nbsp;&nbsp;&nbsp;&nbsp;1. <strong><em>Large-step regime</em></strong>: the highest LR w/o loss divergence
+<p style = "margin:0px"></p>
+&nbsp;&nbsp;&nbsp;&nbsp;2. <strong><em>Small-step regime</em></strong>: the highest LR when loss consistently decreases
+<p style = "margin:5px"></p>
+There is no sharp boundary between them, but the two regimes show a large difference in both optimization and generalization effects. For optimization, as visualized in Fig. 1, the large-step regime is less effective than its small-step counterpart, i.e., it shows worse loss convergence, and shows a completely opposite reaction to momentum, which is a balancing term with $\mu$ as the coefficient added to the gradient: $g^{t+1} = \mu \cdot g^t + \nabla f$. Specifically, adding momentum worsens the optimization effect for the large-step regime while favoring the small-step regime. This phenomenon can be attributed to two reasons:
+1) the small-step regime is more easily trapped in a small convex valley on the loss surface;
+2) momentum accelerates optimization for convex functions and therefore aligns with the small-step regime while countering the large-step regime.
+<p style = "margin:5px"></p>
+<div align=center>
+<img src="/img/two-regime-optimization.png" hspace="0" vspace="10" alt="Trulli" style="width:75%">
+</div>
+<p style = "margin:-20px"></p>
+<div align=center>
+<figcaption style="width:97%;float:center;">
+Fig.1 - Loss trajectory under the two regimes and different momentum values.
+</figcaption>
+</div>
+<br>
+On the other hand, the two regimes inherit the same reaction to momentum from the generalization perspective.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/two-regime-generalization.png" hspace="0" vspace="5" alt="Trulli" style="width:35%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:97%;float:center;">
+Fig.2 - Test accuracy under different learning rates $\eta$ and momentum values $\mu$.
+</figcaption>
+</div>
+<br>
+Building upon the aforementioned two regimes, this paper proposes a new training scheme consisting of two stages: 1) using the large-step regime to target good generalization; 2) using the small-step regime coupled with large momentum to target good optimization. Also, they show an ablation study of the transition epoch between the first stage and the second stage, benchmarked against the aforementioned heuristic three-step learning rate schedule.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/two-regime-results.png" hspace="0" vspace="5" alt="Trulli" style="width:75%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:97%;float:center;">
+Fig.3 - Comparison between proposed schedule and the referenced classic three-step learning rate schedule.
+</figcaption>
+</div></p></li>
+
+<li><p><strong><a href="https://arxiv.org/abs/1907.04595">Towards Explaining the Regularization Effect of Initial Large Learning Rate in Training Neural Networks</a></strong>: This paper shares the same motivation as the previous two-regime work, aiming to theoretically explain the effectiveness of an initial large learning rate and the annealing scheme. Its unique contribution is that it provides a concrete proof for the two-layer fully-connected network case.</p></li>
+
+<li><p><strong><a href="https://arxiv.org/abs/1901.09491">Stiffness: A New Perspective on Generalization in Neural Networks</a></strong>: This paper investigates neural network training and generalization using the concept of
+stiffness. Specifically, it measures how stiff a network is by looking at how a small gradient
+step on one example affects the loss on another example. Given a data pair $(X, y)$, suppose the corresponding loss gradient can be represented as $\vec{g} = \nabla \mathbf{L} (f(X), y)$; we can then discuss the mutual influence between two independent data pairs, as shown in Fig. 4.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/stiffness.png" hspace="0" vspace="0" alt="Trulli" style="width:65%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:97%;float:center;">
+Fig.4 - A diagram illustrating the concept of stiffness. It can be viewed as the change in loss in an input induced by application of a gradient update based on another input. This is equivalent to the gradient alignment between gradients taken at the two inputs.
+</figcaption>
+</div>
+<br>
+and then formulates the discrete (sign) or continuous (cos) stiffness metrics:
+<p style = "margin:5px"></p>
+<div align="center">
+$S_{sign/cos}((X_1, y_1); (X_2, y_2); f) = \mathbb{E}[\text{sign/cos}(\vec{g_1} \cdot \vec{g_2})]$
+</div>
+<p style = "margin:5px"></p>
+Based on the proposed generalization metric, they visualize the change in stiffness between two data samples from the same or different classes, and find that the stiffness increases gradually during training, indicating an increasingly better generalization capability of the network. Moreover, they evaluate the stiffness between data samples from the training dataset and the validation dataset, and find that the proposed metric can identify whether the network is overfitting using only the training dataset. In particular, as illustrated in Fig. 5, when overfitting occurs, the stiffness measured both within the training dataset (train-train) and between the training and validation datasets (train-val) regresses to zero, which means we can tell when the network is overfitting without needing to validate, demonstrating that it is a good metric for quantifying generalization.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/stiffness-overfit.png" hspace="0" vspace="5" alt="Trulli" style="width:85%">
+</div>
+<p style = "margin:-5px"></p>
+<div align=center>
+<figcaption style="width:80%;float:center;">
+Fig.5 - The evolution of training and validation loss (left panel), within-class stiffness (central panel) and between-class stiffness (right panel) during training. The onset of over-fitting is marked
+in orange.
+</figcaption>
+</div></p></li>
+
+<li><p><strong><a href="https://openreview.net/forum?id=r1g87C4KwB">The Break-Even Point on Optimization Trajectories of Deep Neural Networks</a></strong>: This paper investigates how the hyperparameters of SGD used in the early phase of training affect the rest of the optimization trajectory. Before talking about the concrete analysis, we need to keep in mind two concepts:
+<p style = "margin:-15px"></p>
+&nbsp;&nbsp;&nbsp;&nbsp;1. <strong><em>Spectrum of the Hessian ($\lambda_H^1$)</em></strong>: measures the local curvature of the loss surface
+<p style = "margin:0px"></p>
+&nbsp;&nbsp;&nbsp;&nbsp;2. <strong><em>Spectrum of the Covariance of the Gradient ($\lambda_K^1$)</em></strong>: measures the variance of the gradient
+<p style = "margin:5px"></p>
+The first concept is the break-even point. Instead of understanding it through mathematical equations, here I provide an intuitive explanation:
+<i><b>
+<font color=black>
+Assuming the spectral norm of the Hessian increases monotonically along the optimization trajectory, gradient descent reaches a point in the early phase of training at which it oscillates along the most curved direction of the loss surface; we call this point the break-even point.
+</font>
+</b></i>
+Specifically, the break-even point is where the spectral norm of the Hessian or the covariance of the gradient saturates. Before that point, the spectral norm increases monotonically; after that point, the spectral norm stays constant, meaning that the optimization enters a convex-like valley in the loss surface thereafter, and the trajectory oscillates along the most curved direction. Also, the break-even point occurs at a very early stage of network training.
+<p style = "margin:5px"></p>
+Fig. 6 demonstrates that the assumption (the spectral norm increases monotonically) holds when training a simple CNN on CIFAR-10 under two different learning rate settings. It also indicates that the saturation values differ when using different hyperparameters.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/break-even-point.png" hspace="0" vspace="5" alt="Trulli" style="width:55%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:70%;float:center;">
+Fig.6 - The spectral norm of $H$ ($\lambda_H^1$, left) and $\Delta L$ (difference in the training loss computed between two consecutive steps, right) versus $\lambda_K^1$ at different training iterations.
+</figcaption>
+</div>
+<p style = "margin:10px"></p>
+Then, to probe how the hyperparameters of SGD used in the early phase of training matter, one can visualize the optimization trajectories under different hyperparameter settings in Fig. 7 (i.e., large/small learning rate here). At the beginning, the two settings are optimized from the same initialization and therefore share the same trajectory. After a while, their trajectories diverge in different directions until reaching the break-even points, while the large learning rate reaches a smaller $\lambda_K^1$ than its counterpart and shows good generalization thereafter.
+<div align=center>
+<img src="/img/break-even-point-trajectory.png" hspace="0" vspace="5" alt="Trulli" style="width:55%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:90%;float:center;">
+Fig.7 - Visualization of the early part of the training trajectories on CIFAR-10 before reaching 65% training accuracy (break-even point). Red line: LR=0.01; Blue line: LR=0.001.
+</figcaption>
+</div>
+<br>
+Based on the break-even point observation, this paper proposes two conjectures to investigate the effects of different hyperparameters:
+<p style = "margin:5px"></p>
+&nbsp;&nbsp;&nbsp;&nbsp;1. Along the SGD trajectory, the maximum attained values of $\lambda_H^1$ and $\lambda_K^1$ are smaller for a larger learning rate or a smaller batch size.
+<p style = "margin:0px"></p>
+&nbsp;&nbsp;&nbsp;&nbsp;2. Along the SGD trajectory, the maximum attained values of $\lambda_H^* / \lambda_H^1$  and $\lambda_K^* / \lambda_K^1$ are larger for a larger learning rate or a smaller batch size.
+<p style = "margin:5px"></p>
+<div align=center>
+<img src="/img/break-even-point-conjectures.png" hspace="0" vspace="5" alt="Trulli" style="width:90%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:90%;float:center;">
+Fig.8 - The optimization trajectories corresponding to higher learning rates ($\eta$) or lower batch sizes ($S$).
+</figcaption>
+</div></p></li>
+</ul>
+
+<hr />
+
+<h2 id="on-the-frequency-domain-perspective">On the Frequency Domain Perspective</h2>
+
+<p>Understanding the training process of Deep Neural Networks (DNN) is a fundamental problem in
+the area of deep learning. Here are the papers analyzing DNN training from the frequency domain perspective.
+The concept of &ldquo;frequency&rdquo; is central to understanding the papers below. In this context, &ldquo;frequency&rdquo; refers to response frequency, not image (or input) frequency, as explained below.</p>
+
+<ul>
+<li><p><strong><a href="https://arxiv.org/abs/1807.01251">Training Behavior of Deep Neural Network in Frequency Domain</a></strong>: This paper analyzes the network training from the frequency perspective, aiming to claim the F-Principle:
+<strong><em>DNNs often fit target functions from low to high frequencies during the training process.</em></strong>
+<p style = "margin:5px"></p>
+One of the difficulties of frequency analysis for image classification is how to compute the high-dimensional Fourier transform given a dataset $(x_k, y_k)$. They use the first principal component of the inputs $x_k = x_k \cdot v_{PC}$. Then, using the Fourier transform, we can represent the dataset in the frequency domain:
+<p style = "margin:5px"></p>
+<div align="center">
+$\mathbf{F}_{PC}[y](\gamma) = \frac{1}{n} \sum_{j=1}^{n-1} y_j \cdot exp(-2\pi i x_j \gamma)$
+</div>
+<p style = "margin:5px"></p>
+Where $\gamma$ is the frequency index. Suppose the network&rsquo;s prediction is $T(x_k)$; we then define the relative difference as:
+<p style = "margin:5px"></p>
+<div align="center">
+$\Delta_F(\gamma) = \frac{|\mathbf{F}_{PC}[y](\gamma) - \mathbf{F}_{PC}[T](\gamma)|}{|\mathbf{F}_{PC}[y](\gamma)|}$
+</div>
+<p style = "margin:5px"></p>
+We can view the defined relative difference as the frequency loss, measuring the similarity between the frequencies of the ground truth and the predictions. This paper visualizes the changes in frequency loss at several selected frequency indices during training, as shown in Fig. 9.
+<p style = "margin:5px"></p>
+<div align=center>
+<img src="/img/frequency.png" hspace="0" vspace="5" alt="Trulli" style="width:75%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:80%;float:center;">
+Fig.9 - Frequency analysis of the DNN output function along the first principal component during training. The training datasets for the first and second rows are from MNIST and CIFAR-10, respectively. The neural networks for the second and third columns are a fully-connected DNN and a CNN, respectively.
+</figcaption>
+</div>
+<br>
+By examining the relative error of certain selected key frequency components (marked by black squares), one can clearly observe that DNNs of both structures, for both datasets, tend to capture the training data in order from low to high frequencies, as stated by the F-Principle.</p></li>
+
+<li><p><strong><a href="https://arxiv.org/abs/1806.08734">On the Spectral Bias of Neural Networks</a></strong>: This paper shares the same motivation and claim as the F-Principle.</p></li>
+</ul>
+
+<hr />
+
+<h2 id="what-happens-during-the-early-phase-of-dnn-training">What happens during the early phase of DNN training</h2>
+
+<p>Similar to humans and animals, deep artificial neural networks exhibit critical periods, which correspond exactly to the early phase of training. A lot of phenomena have been discovered during the early phase of network training.
+For example, sparse, trainable sub-networks emerge, gradient descent
+moves into a small subspace, and the network undergoes a critical period. Two recent works are briefly introduced below.</p>
+
+<ul>
+<li><p><strong><a href="https://openreview.net/forum?id=BkeStsCcKQ">Critical Learning Periods in Deep Networks</a></strong>: Researchers have documented critical periods affecting a range of species and systems; as machine learning researchers, it is natural to ask whether neural network training also experiences such critical periods. If so, when is the critical period? This paper answers that question using a deficit ablation study.
+<p style = "margin:0px"></p>
+To explore whether critical periods exist in network training, this paper measures the test accuracy affected by the deficit as a function of the epoch $N$ at which the deficit is corrected. From Fig. 10, we can readily observe the existence of a critical period: if the blur is not removed within the first 40-60 epochs, the final performance is severely degraded compared to the baseline.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/critical-period.png" hspace="0" vspace="5" alt="Trulli" style="width:55%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:92%;float:center;">
+Fig.10 - Final test accuracy of a CNN trained with a cataract-like deficit as a function of the transition epoch at which the deficit is removed.
+</figcaption>
+</div>
+<br>
+Further, to explore whether the critical period occurs in the early training phase, they conduct another ablation study on the deficit&rsquo;s starting epoch. The decrease in final performance can be used to measure the sensitivity to the deficit; the most sensitive epochs correspond to the early, rapid training phase. Afterwards, the network is largely unaffected by the temporary deficit.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/critical-period-early.png" hspace="0" vspace="5" alt="Trulli" style="width:55%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:92%;float:center;">
+Fig.11 - The decrease in final performance of a CNN as a function of the onset of a short, 40-epoch deficit.
+</figcaption>
+</div></p></li>
+
+<li><p><strong><a href="https://openreview.net/forum?id=Hkl1iRNFwS">The Early Phase of Neural Network Training</a></strong>: Since the early stage of training is critical, this paper investigates it further, aiming to provide a unified framework for understanding the changes that DNNs undergo during this early phase of training.
+<p style = "margin:0px"></p>
+They first provide a detailed statistical summary of the changes in the early training phase, taking ResNet-20 on CIFAR-10 as an example.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/early-stage.png" hspace="0" vspace="5" alt="Trulli" style="width:90%">
+</div>
+<p style = "margin:-20px"></p>
+<div align=center>
+<figcaption style="width:92%;float:center;">
+Fig.12 - Rough timeline of the early phase of training for ResNet-20 on CIFAR-10.
+</figcaption>
+</div>
+<br>
+Among them, the most attractive phenomenon is that during 500-2000 iterations (2-10 epochs; <sup>1</sup>&frasl;<sub>80</sub>-<sup>1</sup>&frasl;<sub>16</sub> of the training stages), rewinding starts to be highly effective. Building upon the <a href="https://arxiv.org/abs/1803.03635">Lottery Ticket Hypothesis (LTH)</a>, something important happens during the early phase of training, such that when rewinding the network, one should rewind to these early phases instead of the initial phase. As demonstrated by Fig. 13, rewinding variants perform better than lottery initialization.
+<p style = "margin:0px"></p>
+<div align=center>
+<img src="/img/rewind.png" hspace="0" vspace="5" alt="Trulli" style="width:40%">
+</div>
+<p style = "margin:-10px"></p>
+<div align=center>
+<figcaption style="width:60%;float:center;">
+Fig.13 - Accuracy of IMP (Iterative Magnitude Pruning) when rewinding to various iterations of the early phase for ResNet-20 sub-networks as a function of sparsity level.
+</figcaption>
+</div>
+<br>
+Then, they probe what is more important for the early phase of training: the signs of the weights or the magnitudes of the weights? By conducting ablation studies on weight signs and weight magnitudes from initialization or the early phase, this paper finds that both signs and magnitudes are important for handling highly sparse scenarios.
+Also, they probe whether the weights in the early phase can be sampled from a distribution by shuffling the weights globally or locally and then testing their performance in highly sparse scenarios. They find that the weights do not exhibit any clear distributional structure; thus, so far, the early phase of training remains the only way to obtain a good initialization for the retraining phase.</p></li>
+</ul>
+
+<p><br>
+<br></p>
+
+		</div>
+	</article>
+</main>
+
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2026 EcoAI Lab at Purdue University.
+		</div>
+	</div>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/responsive-menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>
