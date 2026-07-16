@@ -3,64 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://localhost:1313/blogs/</loc>
-    <lastmod>2026-06-22T22:23:07-05:00</lastmod>
+    <loc>https://www.haoranyou.com/blogs/</loc>
   </url>
   
   <url>
-    <loc>http://localhost:1313/blogs/hilo-token/</loc>
-    <lastmod>2026-06-22T22:23:07-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2026-06-22T22:23:07-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/blogs/shiftadd/</loc>
-    <lastmod>2024-09-25T08:23:07-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/blogs/eyecod/</loc>
-    <lastmod>2022-06-18T22:23:07-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/blogs/efficient-training/</loc>
-    <lastmod>2020-10-02T22:23:07-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/blogs/dnn-training/</loc>
-    <lastmod>2020-03-21T22:23:07-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://www.haoranyou.com/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/joinus/</loc>
+    <loc>https://www.haoranyou.com/</loc>
   </url>
   
   <url>
-    <loc>http://localhost:1313/news/</loc>
+    <loc>https://www.haoranyou.com/joinus/</loc>
   </url>
   
   <url>
-    <loc>http://localhost:1313/publications/</loc>
+    <loc>https://www.haoranyou.com/news/</loc>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://www.haoranyou.com/publications/</loc>
+  </url>
+  
+  <url>
+    <loc>https://www.haoranyou.com/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/team/</loc>
+    <loc>https://www.haoranyou.com/team/</loc>
   </url>
   
 </urlset>
