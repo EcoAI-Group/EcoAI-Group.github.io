@@ -10,7 +10,7 @@
 	<meta property="og:url" content="https://www.haoranyou.com/blogs/eb-decode/">
 	<meta property="og:site_name" content="EcoAI Lab">
 	<meta property="og:title" content="EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling">
-	<meta property="og:description" content="Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.">
+	<meta property="og:description" content="LLaDA-8B-Instruct answering a GSM8K question, decoded two ways on an NVIDIA H100. Vanilla decoding needs 512 steps and 19.05 s; EB-Decode reaches the same answer in 33 steps and 1.34 s, a 14.2× speedup. Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.">
 	<meta property="og:locale" content="en_us">
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="blogs">
@@ -20,7 +20,7 @@
 	
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling">
-	<meta name="twitter:description" content="Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.">
+	<meta name="twitter:description" content="LLaDA-8B-Instruct answering a GSM8K question, decoded two ways on an NVIDIA H100. Vanilla decoding needs 512 steps and 19.05 s; EB-Decode reaches the same answer in 33 steps and 1.34 s, a 14.2× speedup. Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.">
 
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -109,6 +109,16 @@
 <meta name="twitter:title" content="EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling">
 <meta name="twitter:description" content="EB-Decode uses two lightweight routers to learn which tokens a diffusion LLM should decode together and which predictions can be finalized early, reaching 3.53-18.76x the throughput of vanilla decoding at comparable accuracy.">
 <meta name="twitter:image" content="img/ebdecode-cover.png">
+<div align=center>
+    <video src="/video/ebdecode-demo.mp4" poster="/img/ebdecode-demo-poster.png" controls loop muted playsinline preload="none" style="width:95%"></video>
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    LLaDA-8B-Instruct answering a GSM8K question, decoded two ways on an NVIDIA H100. Vanilla decoding needs 512 steps and 19.05 s; EB-Decode reaches the same answer in 33 steps and 1.34 s, a 14.2&times; speedup.
+    </figcaption>
+</div>
+<br>
 <p>Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.</p>
 <p>We propose Early-Bird Decoding (EB-Decode), which uses two lightweight routers to learn the two decisions that block-wise decoding makes by hand: which tokens should be processed together, and which predictions can be finalized early. A learnable block size module (LBS) groups tokens of similar difficulty, and a position-aware learnable parallel sampling module (LPS) decides when those tokens can be accepted. Both modules reuse the forward pass of the base model and require no change to the pretrained weights. Full details are in our preprint, <a href="https://arxiv.org/abs/2609.16450">EB-Decode (arXiv:2609.16450)</a>.</p>
 <div align=center>
