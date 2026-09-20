@@ -182,43 +182,7 @@
     </figcaption>
 </div>
 <br>
-<p>Taking LLaDA-8B-Instruct on GSM8K-CoT as an example, LBS alone already improves the efficiency of block-wise decoding, and adding LPS raises throughput further with a small change in accuracy:</p>
-<table>
-	<thead>
-			<tr>
-					<th>Decoding method</th>
-					<th>Accuracy</th>
-					<th>Throughput (TPS)</th>
-					<th>Speedup over vanilla</th>
-			</tr>
-	</thead>
-	<tbody>
-			<tr>
-					<td>Vanilla</td>
-					<td>79.07%</td>
-					<td>17.04</td>
-					<td>1.00×</td>
-			</tr>
-			<tr>
-					<td>Fast-dLLM</td>
-					<td>78.70%</td>
-					<td>79.20</td>
-					<td>4.65×</td>
-			</tr>
-			<tr>
-					<td>EB-Decode, LBS only</td>
-					<td>79.68%</td>
-					<td>86.80</td>
-					<td>5.09×</td>
-			</tr>
-			<tr>
-					<td>EB-Decode, LBS + LPS</td>
-					<td>78.24%</td>
-					<td>104.55</td>
-					<td>6.14×</td>
-			</tr>
-	</tbody>
-</table>
+<p>Taking LLaDA-8B-Instruct on GSM8K-CoT as an example, LBS alone already improves the efficiency of block-wise decoding, lifting throughput from the vanilla decoder&rsquo;s 17.04 TPS to 86.80 TPS at 79.68% accuracy, ahead of Fast-dLLM on both counts. Adding LPS raises throughput further to 104.55 TPS, a 6.14× speedup over vanilla, with accuracy at 78.24%.</p>
 <p>The learned block selection contributes on its own as well. On the same task, keeping all three filters but choosing candidate blocks at random gives 76.80% accuracy at 23.96 TPS, while LBS reaches 79.68% and 86.80 TPS. The gains do not come from the EOS, gap, and block-size constraints alone.</p>
 <p><strong>Deployment: lightweight routers that compose with caching.</strong> LBS and LPS contain roughly 0.6M and 0.03M trainable parameters. Measured on an A100, their combined routing overhead is about 6.21% of a single base-model forward pass. The speedup therefore comes from taking fewer denoising steps rather than from making each forward pass cheaper.</p>
 <p>EB-Decode also composes with KV caching. For non-contiguous blocks, the cache reuses keys and values outside the leftmost and rightmost selected positions. In a separate experiment on four A100 GPUs, dual caching raises EB-Decode throughput from 65.27 to 78.43 TPS, an additional 1.20×, and EB-Decode still reaches about 1.38× the throughput of Fast-dLLM under the same dual-cache setting.</p>
