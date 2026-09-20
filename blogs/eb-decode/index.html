@@ -162,6 +162,16 @@
 <br>
 <p><strong>Results: block selection and early acceptance contribute in complementary ways.</strong> We evaluate EB-Decode on LLaDA-8B-Instruct, Dream-v0-Instruct-7B, and LLaDA-1.5, covering mathematical reasoning on GSM8K and MATH500 and code generation on HumanEval and MBPP. The main experiments use four H100 GPUs, the Hugging Face Transformers backend, batch size 1, and generation length 512. No method uses a KV cache, so the comparison reflects the decoding strategy itself.</p>
 <p>Under these settings, full EB-Decode reaches 3.53× to 18.76× the throughput of the vanilla decoder and up to 1.58× that of Fast-dLLM, with task accuracy close to the vanilla decoder throughout. The largest speedup comes from Dream on MBPP, where throughput rises from 2.23 to 41.83 TPS and accuracy moves from 53.40% to 53.60%.</p>
+<div align=center>
+    <img src="/img/ebdecode-results.png" hspace="0" alt="Comparison of EB-Decode and baseline methods across four benchmarks and three base models" style="width:95%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Table 1 - Comparison of EB-Decode and baseline methods across four benchmarks and three base models, reporting tokens per second per GPU (TPS), speedup over vanilla decoding (Sp.up), and task accuracy. The best throughput and speedup in each column are in bold. "&mdash;" marks the settings where Learn2PD has no open-source implementation for LLaDA-1.5.
+    </figcaption>
+</div>
+<br>
 <p>Taking LLaDA-8B-Instruct on GSM8K-CoT as an example, LBS alone already improves the efficiency of block-wise decoding, and adding LPS raises throughput further with a small change in accuracy:</p>
 <table>
 	<thead>
