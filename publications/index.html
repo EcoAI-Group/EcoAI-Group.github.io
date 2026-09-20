@@ -7,17 +7,15 @@
 	<title>Publications - EcoAI Lab</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="Peer-reviewed publications and preprints from the EcoAI Lab on efficient AI, algorithm-hardware co-design, and model acceleration.">
-	<meta property="og:url" content="https://www.haoranyou.com/publications/">
-	<meta property="og:site_name" content="EcoAI Lab">
-	<meta property="og:title" content="Publications">
-	<meta property="og:description" content="Peer-reviewed publications and preprints from the EcoAI Lab on efficient AI, algorithm-hardware co-design, and model acceleration.">
-	<meta property="og:locale" content="en_us">
-	<meta property="og:type" content="website">
+	<meta property="og:title" content="Publications" />
+<meta property="og:description" content="Peer-reviewed publications and preprints from the EcoAI Lab on efficient AI, algorithm-hardware co-design, and model acceleration." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.haoranyou.com/publications/" />
 
-	
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="Publications">
-	<meta name="twitter:description" content="Peer-reviewed publications and preprints from the EcoAI Lab on efficient AI, algorithm-hardware co-design, and model acceleration.">
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Publications"/>
+<meta name="twitter:description" content="Peer-reviewed publications and preprints from the EcoAI Lab on efficient AI, algorithm-hardware co-design, and model acceleration."/>
 
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
 	<link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -128,13 +126,56 @@
   margin-right: 20px;
 }
 
-.paper-figure img {
+.paper-figure img,
+  .paper-figure video {
   width: 240px;
   height: auto;
   display: block;
   max-width: 100%;
   opacity: 1 !important;
   visibility: visible !important;
+  cursor: zoom-in;
+}
+
+.pub-lightbox {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.85);
+  cursor: zoom-out;
+  align-items: center;
+  justify-content: center;
+}
+
+.pub-lightbox.is-open {
+  display: flex;
+}
+
+.pub-lightbox img,
+.pub-lightbox video {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.pub-lightbox video {
+  display: none;
+}
+
+.pub-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #fff;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .pub-info {
@@ -175,7 +216,8 @@ hr {
     width: 150px;
     min-width: 150px;
   }
-  .paper-figure img {
+  .paper-figure img,
+  .paper-figure video {
     width: 130px;
   }
 }
@@ -191,7 +233,8 @@ hr {
     margin-bottom: 15px;
     text-align: center;
   }
-  .paper-figure img {
+  .paper-figure img,
+  .paper-figure video {
     width: 200px;
     margin: 0 auto;
   }
@@ -207,7 +250,7 @@ hr {
   <li class="list-group-item">
     <div class="pub-row">
       <div class="paper-figure">
-        <img src="img/eb-decode.gif" alt="Publication image">
+        <video src="/video/ebdecode-demo.mp4" autoplay loop muted playsinline preload="auto"></video>
       </div>
       <div class="pub-info">
         <strong>Early-Bird Decoding: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling</strong>
@@ -216,11 +259,11 @@ hr {
         In <strong>arXiv Preprint</strong>
         </span>
         <br>
-        L. Wei, W. Zhou, J. Wu, Y. Shen, M. Wang, <strong>H. You</strong><span style="font-size: 1.2em; vertical-align: super; line-height: 0;">&#9993;</span>
-        <br>
-        <span style="color:blue">
+        L. Wei*, W. Zhou*, J. Wu, Y. Shen, M. Wang, <strong>H. You</strong><span style="font-size: 1.2em; vertical-align: super; line-height: 0;">&#9993;</span>
+        <!-- <br> -->
+        <!-- <span style="color:blue">
           <strong>3.53&ndash;18.76&times; higher throughput than vanilla decoding and up to 1.58&times; over Fast-dLLM, at comparable accuracy</strong>
-        </span>
+        </span> -->
         <br>
         <a href="https://arxiv.org/abs/2609.16450" target="_blank">[Paper]</a>
         <br>
@@ -1207,6 +1250,55 @@ hr {
 <p style="margin-top: 30px;">You can also find the complete list of publications from <a href="https://scholar.google.com/citations?user=YJWCW8gAAAAJ" target="_blank">Google Scholar</a>.</p>
 
 </div>
+
+<div class="pub-lightbox" id="pub-lightbox">
+  <span class="pub-lightbox-close">&times;</span>
+  <img src="" alt="">
+  <video controls loop playsinline></video>
+</div>
+
+<script>
+(function () {
+  var lightbox = document.getElementById('pub-lightbox');
+  var lightboxImg = lightbox.querySelector('img');
+  var lightboxVideo = lightbox.querySelector('video');
+
+  document.querySelectorAll('.paper-figure img, .paper-figure video').forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      if (thumb.tagName === 'VIDEO') {
+        lightboxImg.style.display = 'none';
+        lightboxVideo.style.display = 'block';
+        lightboxVideo.src = thumb.currentSrc || thumb.querySelector('source') && thumb.querySelector('source').src || thumb.src;
+        lightboxVideo.muted = false;
+        lightboxVideo.play();
+      } else {
+        lightboxVideo.style.display = 'none';
+        lightboxImg.style.display = 'block';
+        lightboxImg.src = thumb.src;
+        lightboxImg.alt = thumb.alt;
+      }
+      lightbox.classList.add('is-open');
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    lightboxImg.src = '';
+    lightboxVideo.pause();
+    lightboxVideo.removeAttribute('src');
+    lightboxVideo.load();
+  }
+
+  lightboxVideo.addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+  lightbox.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+})();
+</script>
 
   </div>
 </main>

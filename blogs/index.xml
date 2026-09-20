@@ -1,59 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-	<channel>
-		<title>Blog on EcoAI Lab</title>
-		<link>https://www.haoranyou.com/blogs/</link>
-		<description>Recent content in Blog on EcoAI Lab</description>
-		<generator>Hugo</generator>
-		<language>en-us</language>
-		
-		
-		
-		
-			<lastBuildDate>Sat, 19 Sep 2026 22:23:07 -0500</lastBuildDate>
-		
-			<atom:link href="https://www.haoranyou.com/blogs/index.xml" rel="self" type="application/rss+xml" />
-			<item>
-				<title>EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling</title>
-				<link>https://www.haoranyou.com/blogs/eb-decode/</link>
-				<pubDate>Sat, 19 Sep 2026 22:23:07 -0500</pubDate>
-				<guid>https://www.haoranyou.com/blogs/eb-decode/</guid>
-				<description>&lt;!-- ## EB-Decode Summary --&gt;&#xA;&lt;meta name=&#34;twitter:card&#34; content=&#34;summary_large_image&#34;&gt;&#xA;&lt;meta name=&#34;twitter:site&#34; content=&#34;@Haoran You&#34;&gt;&#xA;&lt;meta name=&#34;twitter:creator&#34; content=&#34;@Haoran You&#34;&gt;&#xA;&lt;meta name=&#34;twitter:title&#34; content=&#34;EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling&#34;&gt;&#xA;&lt;meta name=&#34;twitter:description&#34; content=&#34;EB-Decode uses two lightweight routers to learn which tokens a diffusion LLM should decode together and which predictions can be finalized early, reaching 3.53-18.76x the throughput of vanilla decoding at comparable accuracy.&#34;&gt;&#xA;&lt;meta name=&#34;twitter:image&#34; content=&#34;img/ebdecode-demo-poster.png&#34;&gt;&#xA;&lt;div align=center&gt;&#xA;    &lt;video src=&#34;https://www.haoranyou.com/video/ebdecode-demo.mp4&#34; poster=&#34;/img/ebdecode-demo-poster.png&#34; controls loop muted playsinline preload=&#34;none&#34; style=&#34;width:95%&#34;&gt;&lt;/video&gt;&#xA;&lt;/div&gt;&#xA;&lt;p style = &#34;margin:5px&#34;&gt;&lt;/p&gt;&#xA;&lt;div align=center&gt;&#xA;    &lt;figcaption style=&#34;width:97%;float:center;&#34;&gt;&#xA;    LLaDA-8B-Instruct answering a GSM8K question, decoded two ways on an NVIDIA H100. Vanilla decoding needs 512 steps and 19.05 s; EB-Decode reaches the same answer in 33 steps and 1.34 s, a 14.2&amp;times; speedup.&#xA;    &lt;/figcaption&gt;&#xA;&lt;/div&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.&lt;/p&gt;</description>
-			</item>
-			<item>
-				<title>Efficient Image Editing via HiLo-Token</title>
-				<link>https://www.haoranyou.com/blogs/hilo-token/</link>
-				<pubDate>Mon, 22 Jun 2026 22:23:07 -0500</pubDate>
-				<guid>https://www.haoranyou.com/blogs/hilo-token/</guid>
-				<description>&lt;!-- ## Efficient Image Editing via HiLo-Token Summary --&gt;&#xA;&lt;meta name=&#34;twitter:card&#34; content=&#34;summary_large_image&#34;&gt;&#xA;&lt;meta name=&#34;twitter:site&#34; content=&#34;@Haoran You&#34;&gt;&#xA;&lt;meta name=&#34;twitter:creator&#34; content=&#34;@Haoran You&#34;&gt;&#xA;&lt;meta name=&#34;twitter:title&#34; content=&#34;Efficient Image Editing via HiLo-Token&#34;&gt;&#xA;&lt;meta name=&#34;twitter:description&#34; content=&#34;HiLo-Token allocates more tokens to high-frequency, context-rich regions and fewer tokens to low-frequency regions, achieving up to 3.13x DiT speedup for image editing without quality regression.&#34;&gt;&#xA;&lt;meta name=&#34;twitter:image&#34; content=&#34;img/hilo-token.png&#34;&gt;&#xA;&lt;p&gt;Creative image editing features such as Photoshop&amp;rsquo;s &lt;a href=&#34;https://www.adobe.com/products/firefly/features/remove-object-from-photo.html&#34;&gt;Remove Tool&lt;/a&gt; and &lt;a href=&#34;https://www.adobe.com/products/photoshop/generative-fill.html&#34;&gt;Generative Fill&lt;/a&gt; are used by millions of customers and account for a large share of Photoshop and Lightroom traffic; within 28 days of the Photoshop v27.0 release, 1.1 million of 3.3 million users engaged with Generative Fill, generating 36.2 million interactions. Serving these features at scale is becoming more expensive as the field moves from convolution-based U-Nets to Diffusion Transformers (DiTs), which are roughly 6x costlier to serve in the cloud despite having 1.8x fewer parameters. Below is a summary of &lt;strong&gt;HiLo-Token&lt;/strong&gt;, an &lt;a href=&#34;http://arxiv.org/abs/2606.13898&#34;&gt;Adobe Tech Report (2026)&lt;/a&gt; that tackles this serving cost problem through input-adaptive token compression.&lt;/p&gt;</description>
-			</item>
-			<item>
-				<title>Hardware-Inspired ShiftAddNets</title>
-				<link>https://www.haoranyou.com/blogs/shiftadd/</link>
-				<pubDate>Wed, 25 Sep 2024 08:23:07 -0500</pubDate>
-				<guid>https://www.haoranyou.com/blogs/shiftadd/</guid>
-				<description>&lt;meta name=&#34;twitter:card&#34; content=&#34;summary_large_image&#34;&gt;&#xA;&lt;meta name=&#34;twitter:site&#34; content=&#34;@Haoran You&#34;&gt;&#xA;&lt;meta name=&#34;twitter:creator&#34; content=&#34;@Haoran You&#34;&gt;&#xA;&lt;meta name=&#34;twitter:title&#34; content=&#34;Hardware-Inspired ShiftAddNets&#34;&gt;&#xA;&lt;meta name=&#34;twitter:description&#34; content=&#34;A unified story of ShiftAddNet, ShiftAddNAS, ShiftAddViT, and ShiftAddLLM-reparameterizing CNNs, hybrid NAS networks, ViTs, and LLMs with bitwise shifts and adds instead of multiplications.&#34;&gt;&#xA;&lt;meta name=&#34;twitter:image&#34; content=&#34;img/shiftadd-cover.png&#34;&gt;&#xA;&lt;p&gt;Multiplications dominate the cost of deep networks, both in silicon area and in energy. Measured on a ZYNQ-7 ZC706 FPGA and on a 45nm ASIC, a single multiplication costs up to 196× and 31× more energy than the equivalent addition or bitwise shift, respectively—a gap that widens further at lower precision. Computer architects have exploited this gap for decades: any multiplication by a constant can be rewritten as a sequence of bit-shifts and additions, which is exactly how multipliers are avoided in low-power digital signal processing hardware. The series of work below, spanning five years and four papers, asks how far this hardware &amp;ldquo;shortcut&amp;rdquo; can be pushed into deep learning—starting from CNNs trained from scratch, all the way to today&amp;rsquo;s large language models (LLMs) reparameterized with no retraining at all.&lt;/p&gt;</description>
-			</item>
-			<item>
-				<title>Integrated Eye Tracking System</title>
-				<link>https://www.haoranyou.com/blogs/eyecod/</link>
-				<pubDate>Sat, 18 Jun 2022 22:23:07 -0500</pubDate>
-				<guid>https://www.haoranyou.com/blogs/eyecod/</guid>
-				<description>&lt;meta name=&#34;twitter:card&#34; content=&#34;summary_large_image&#34;&gt;&#xA;&lt;meta name=&#34;twitter:site&#34; content=&#34;@Haoran You&#34;&gt;&#xA;&lt;meta name=&#34;twitter:creator&#34; content=&#34;@Haoran You&#34;&gt;&#xA;&lt;meta name=&#34;twitter:title&#34; content=&#34;Integrated Eye Tracking System&#34;&gt;&#xA;&lt;meta name=&#34;twitter:description&#34; content=&#34;EyeCoD pairs a lensless FlatCam with a predict-then-focus algorithm and a dedicated accelerator, achieving real-time (&gt;240 FPS) eye tracking with a much smaller form-factor.&#34;&gt;&#xA;&lt;meta name=&#34;twitter:image&#34; content=&#34;img/i-FlatCam-demo.gif&#34;&gt;&#xA;&lt;p&gt;Eye tracking is an essential human-machine interaction modality for VR/AR, enabling technologies like foveated rendering that require high throughput (&amp;gt;240 FPS), a small form-factor, and visual privacy. Existing systems fall short of these goals because of three bottlenecks: (1) bulky lens-based cameras impose a large form-factor and a high communication cost between camera and processor; (2) captured images contain a lot of redundancy, since only a small portion shows the human eye; and (3) state-of-the-art segmentation and gaze estimation DNNs require up to 16G FLOPs. &lt;strong&gt;&lt;a href=&#34;https://eyecod-toppick.github.io/&#34;&gt;EyeCoD (ISCA&#39;22; IEEE Micro Top Picks&#39;23)&lt;/a&gt;&lt;/strong&gt; tackles all three with a camera-algorithm-accelerator co-design.&lt;/p&gt;</description>
-			</item>
-			<item>
-				<title>Efficient DNN Training</title>
-				<link>https://www.haoranyou.com/blogs/efficient-training/</link>
-				<pubDate>Fri, 02 Oct 2020 22:23:07 -0500</pubDate>
-				<guid>https://www.haoranyou.com/blogs/efficient-training/</guid>
-				<description>&lt;!-- ## Efficient DNN Training Summary --&gt;&#xD;&#xA;&lt;meta name=&#34;twitter:card&#34; content=&#34;summary_large_image&#34;&gt;&#xD;&#xA;&lt;meta name=&#34;twitter:site&#34; content=&#34;@Haoran You&#34;&gt;&#xD;&#xA;&lt;meta name=&#34;twitter:creator&#34; content=&#34;@Haoran You&#34;&gt;&#xD;&#xA;&lt;meta name=&#34;twitter:title&#34; content=&#34;Efficient DNN Training&#34;&gt;&#xD;&#xA;&lt;meta name=&#34;twitter:description&#34; content=&#34;Introduction to the three most recent works putting huge effort toward the efficient training goal.&#34;&gt;&#xD;&#xA;&lt;meta name=&#34;twitter:image&#34; content=&#34;img/DNN.png&#34;&gt;&#xD;&#xA;&lt;p&gt;Model compression has been extensively studied for light-weight inference; popular means include network pruning, weight factorization, network quantization, and neural architecture search, among many others. On the other hand, the literature on efficient training appears to be much sparser: DNN training still requires us to fully train the over-parameterized neural network.&#xA;Here we focus on reducing total training time and training energy costs, aiming at deployment on resource-constrained platforms, e.g., FPGAs, ASICs, mobile, and IoT devices. Below are three of the most recent works putting huge effort toward the efficient training goal.&lt;/p&gt;</description>
-			</item>
-			<item>
-				<title>DNN Training Stages Understanding</title>
-				<link>https://www.haoranyou.com/blogs/dnn-training/</link>
-				<pubDate>Sat, 21 Mar 2020 22:23:07 -0500</pubDate>
-				<guid>https://www.haoranyou.com/blogs/dnn-training/</guid>
-				<description>&lt;!-- # Analysis Shed Light on DNN Training --&gt;&#xD;&#xA;&lt;p&gt;Recent works show that DNN training undergoes different stages, each showing different effects depending on the hyperparameter setting, which therefore warrants detailed explanation.&#xA;Below, I aim to analyze and share a deep understanding of DNN training, especially from the following three perspectives:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;On the optimization and generalization perspective&lt;/li&gt;&#xA;&lt;li&gt;On the frequency domain perspective&lt;/li&gt;&#xA;&lt;li&gt;What happens during the early phase of DNN training&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;on-the-optimization-and-generalization-perspective&#34;&gt;On the Optimization and Generalization Perspective&lt;/h2&gt;&#xA;&lt;p&gt;The connection between optimization and generalization of deep neural networks (DNN) is not&#xA;fully understood. For instance, using a large initial learning rate often improves generalization,&#xA;which can come at the expense of the initial training loss reduction. In this context, four works aimed at understanding the connection between optimization and generalization are discussed below.&lt;/p&gt;</description>
-			</item>
-	</channel>
+  <channel>
+    <title>Blog on EcoAI Lab</title>
+    <link>https://www.haoranyou.com/blogs/</link>
+    <description>Recent content in Blog on EcoAI Lab</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://www.haoranyou.com/blogs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
 </rss>
