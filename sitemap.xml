@@ -1,39 +1,41 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://www.haoranyou.com/blogs/</loc>
-  </url>
-  
-  <url>
-    <loc>https://www.haoranyou.com/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+    <lastmod>2026-09-19T22:23:07-05:00</lastmod>
+  </url><url>
+    <loc>https://www.haoranyou.com/blogs/eb-decode/</loc>
+    <lastmod>2026-09-19T22:23:07-05:00</lastmod>
+  </url><url>
     <loc>https://www.haoranyou.com/</loc>
-  </url>
-  
-  <url>
+    <lastmod>2026-09-19T22:23:07-05:00</lastmod>
+  </url><url>
+    <loc>https://www.haoranyou.com/blogs/hilo-token/</loc>
+    <lastmod>2026-06-22T22:23:07-05:00</lastmod>
+  </url><url>
+    <loc>https://www.haoranyou.com/blogs/shiftadd/</loc>
+    <lastmod>2024-09-25T08:23:07-05:00</lastmod>
+  </url><url>
+    <loc>https://www.haoranyou.com/blogs/eyecod/</loc>
+    <lastmod>2022-06-18T22:23:07-05:00</lastmod>
+  </url><url>
+    <loc>https://www.haoranyou.com/blogs/efficient-training/</loc>
+    <lastmod>2020-10-02T22:23:07-05:00</lastmod>
+  </url><url>
+    <loc>https://www.haoranyou.com/blogs/dnn-training/</loc>
+    <lastmod>2020-03-21T22:23:07-05:00</lastmod>
+  </url><url>
+    <loc>https://www.haoranyou.com/categories/</loc>
+  </url><url>
     <loc>https://www.haoranyou.com/joinus/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.haoranyou.com/news/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.haoranyou.com/publications/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.haoranyou.com/tags/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://www.haoranyou.com/team/</loc>
   </url>
-  
 </urlset>

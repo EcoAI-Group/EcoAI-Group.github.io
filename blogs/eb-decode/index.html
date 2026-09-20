@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling - EcoAI Lab</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:url" content="https://www.haoranyou.com/blogs/eb-decode/">
+	<meta property="og:site_name" content="EcoAI Lab">
+	<meta property="og:title" content="EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling">
+	<meta property="og:description" content="Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="blogs">
+		<meta property="article:published_time" content="2026-09-19T22:23:07-05:00">
+		<meta property="article:modified_time" content="2026-09-19T22:23:07-05:00">
+
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling">
+	<meta name="twitter:description" content="Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.">
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/responsive-menu.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-CJ01WL3BFP"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-CJ01WL3BFP');
+	</script>
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="header__row">
+			<div class="logo">
+				<a href="https://www.purdue.edu" target="_blank" class="logo__university">
+					<img src="/img/purdue-university-logo.png" alt="Purdue University" class="logo__university-img">
+				</a>
+				<span class="logo__separator"></span>
+				<a class="logo__link" href="/" title="EcoAI Lab" rel="home">
+					<img src="/img/ecoai.png" alt="EcoAI Lab" class="logo__ecoai-img">
+					
+				</a>
+			</div>
+			
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">Home</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/news/">News</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/team/">Team</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/publications/">Publications</a>
+		</li>
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/blogs/">Blogs</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/joinus/">Join Us</a>
+		</li>
+	</ul>
+</nav>
+
+		</div>
+	</div>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} })
+    </script>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2026-09-19T22:23:07">2026-09-19</time>
+</div>
+</div>
+		</header>
+<div class="content post__content clearfix">
+			<!-- ## EB-Decode Summary -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@Haoran You">
+<meta name="twitter:creator" content="@Haoran You">
+<meta name="twitter:title" content="EB-Decode: Accelerating Diffusion LLMs with Learnable Block Sizes and Parallel Sampling">
+<meta name="twitter:description" content="EB-Decode uses two lightweight routers to learn which tokens a diffusion LLM should decode together and which predictions can be finalized early, reaching 3.53-18.76x the throughput of vanilla decoding at comparable accuracy.">
+<meta name="twitter:image" content="img/ebdecode-cover.png">
+<p>Diffusion large language models (dLLMs) predict many tokens in a single forward pass, but those predictions do not all become final output at the same time. Under the common block-wise decoding recipe, the model walks through fixed-length blocks, commits the predictions inside the active block that satisfy a confidence threshold, and leaves the rest masked for further refinement. Because both the block boundaries and the threshold are fixed in advance, a large number of predictions that have already stabilized still sit through additional denoising steps before they are accepted.</p>
+<p>We propose Early-Bird Decoding (EB-Decode), which uses two lightweight routers to learn the two decisions that block-wise decoding makes by hand: which tokens should be processed together, and which predictions can be finalized early. A learnable block size module (LBS) groups tokens of similar difficulty, and a position-aware learnable parallel sampling module (LPS) decides when those tokens can be accepted. Both modules reuse the forward pass of the base model and require no change to the pretrained weights. Full details are in our preprint, <a href="https://arxiv.org/abs/2609.16450">EB-Decode (arXiv:2609.16450)</a>.</p>
+<div align=center>
+    <img src="/img/ebdecode-concept.png" hspace="0" alt="Conceptual comparison between fixed block-wise decoding and EB-Decode" style="width:95%">
+</div>
+<p style = "margin:10px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.1 - Conceptual comparison between fixed block-wise decoding and EB-Decode. Fixed blocks may mix tokens of different difficulty and prevent correct predictions from being accepted across block boundaries. EB-Decode reduces this waiting through adaptive grouping and early acceptance.
+    </figcaption>
+</div>
+<br>
+<p><strong>Observation 1: token difficulty follows a staircase pattern.</strong> We start by measuring prediction entropy across positions, which reflects how uncertain the model is among the candidate tokens at each masked position. Along the denoising trajectory of a GSM8K sample, low-entropy positions form long plateaus with a few high-entropy positions scattered between them. These plateaus typically correspond to content that is easy to predict, such as the routine connective phrasing in a math solution or the structural scaffolding in code.</p>
+<p>Fixed boundaries do not respect this distribution. A stretch of easy content can be split across several blocks and lose the opportunity to be accepted jointly, while a handful of hard tokens can stall the active block so that easier content behind them cannot advance. Allowing non-contiguous grouping lets the model settle the context surrounding a hard position first, then resolve that position with the additional right-side information it has gained.</p>
+<div align=center>
+    <img src="/img/ebdecode-entropy.png" hspace="0" alt="Prediction entropy heatmaps under fixed and learnable block sizes" style="width:55%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.2 - Prediction entropy heatmaps under a fixed block size and under our non-contiguous learnable block size. Gray regions denote tokens that have already been committed. Learnable blocks organize the active positions according to the difficulty pattern, which reduces the stalls caused by fixed boundaries.
+    </figcaption>
+</div>
+<br>
+<p><strong>Observation 2: predictions stabilize well before confidence catches up.</strong> Even with sensible block boundaries, a second kind of waiting happens inside the block. Tracking the per-step prediction at each position shows that many tokens already hold the correct value yet keep participating in denoising because their confidence has not reached the threshold. A single confidence score cannot separate two situations: a prediction that is already correct but held with low confidence, and a prediction that genuinely still needs revision.</p>
+<p>The figure below illustrates the gap between the step at which a prediction becomes correct and the step at which it is finally accepted. On GSM8K, vanilla decoding and confidence-based decoding wait an average of 13.4 and 2.3 denoising steps respectively, while EB-Decode shortens the gap to 0.7 steps. This is the early-bird phenomenon we want to exploit: identify predictions that have stabilized ahead of schedule and remove the computation that follows them.</p>
+<div align=center>
+    <img src="/img/ebdecode-delay.png" hspace="0" alt="Per-token prediction trajectories showing acceptance delay" style="width:60%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.3 - Per-token prediction trajectories across denoising steps. Several positions already match the ground truth many steps before the decoder unmasks them, so the computation spent between those two moments is wasted.
+    </figcaption>
+</div>
+<br>
+<p><strong>LBS: learning which tokens should be decoded together.</strong> To match the staircase structure of token difficulty, Learnable Block Size (LBS) predicts for each masked position whether it belongs in the current block, so the block size follows from the selected positions rather than being set in advance. The router takes two inputs: the normalized prediction entropy, and the embedding of the current top-1 token. Entropy supplies the uncertainty signal, and the semantic embedding helps distinguish different sources of that uncertainty, for instance a choice among interchangeable function words versus a content word whose identity depends on context that has not been resolved.</p>
+<p>During training, LBS uses the per-token cross-entropy of the frozen model to learn to prefer positions that are currently easy to predict, and a regularization term that rewards larger selections keeps it from collapsing to an empty block. At inference, the candidate set passes through three steps: EOS predictions are removed so that generation is not cut short; the maximum gap between neighboring selected positions is capped to preserve local coherence; and when too few positions survive, the router falls back to a small left-to-right block. The resulting block may contain non-contiguous positions, but it will not reach arbitrarily far across regions that remain unresolved.</p>
+<p><strong>LPS: learning which predictions can be finalized early.</strong> LBS decides which positions are active, and Learnable Parallel Sampling (LPS) decides which of them can be accepted. LPS uses a small Transformer that processes the positions in a block jointly, with five inputs per position: the top-1 confidence, the prediction entropy, the probability gap between the top-1 and top-2 candidates, the block-wise mask ratio, and the relative position inside the block. These describe the uncertainty of a prediction, the competition among candidates, the current decoding progress, and positional relationships, which together let the acceptance decision adapt to blocks of different lengths.</p>
+<p>LPS is trained by generate-then-replay and needs no human annotation. The model first produces a complete sequence, and the label at each intermediate step is whether the current prediction already matches that final sequence. What LPS learns, therefore, is when a prediction has converged to the model&rsquo;s own output, not whether that output is correct in an absolute sense. Because a false acceptance locks in a wrong token irreversibly, training assigns higher weight to negative samples.</p>
+<p>At inference, LPS keeps the original confidence path intact: a token is accepted if it reaches the base model&rsquo;s confidence threshold or if its LPS score exceeds a threshold calibrated on a validation split. Once the active block is resolved, LBS selects the next one. If no position qualifies at a given step, the highest-confidence candidate is accepted so that decoding does not stall.</p>
+<div align=center>
+    <img src="/img/ebdecode-pipeline.png" hspace="0" alt="EB-Decode inference pipeline and training procedure" style="width:90%">
+</div>
+<p style = "margin:5px"></p>
+<div align=center>
+    <figcaption style="width:97%;float:center;">
+    Fig.4 - The EB-Decode inference pipeline and training procedure. LBS first selects and filters the active block, and LPS then decides which predictions inside it can be accepted. The two routers are trained separately, and the base dLLM stays frozen throughout.
+    </figcaption>
+</div>
+<br>
+<p><strong>Results: block selection and early acceptance contribute in complementary ways.</strong> We evaluate EB-Decode on LLaDA-8B-Instruct, Dream-v0-Instruct-7B, and LLaDA-1.5, covering mathematical reasoning on GSM8K and MATH500 and code generation on HumanEval and MBPP. The main experiments use four H100 GPUs, the Hugging Face Transformers backend, batch size 1, and generation length 512. No method uses a KV cache, so the comparison reflects the decoding strategy itself.</p>
+<p>Under these settings, full EB-Decode reaches 3.53× to 18.76× the throughput of the vanilla decoder and up to 1.58× that of Fast-dLLM, with task accuracy close to the vanilla decoder throughout. The largest speedup comes from Dream on MBPP, where throughput rises from 2.23 to 41.83 TPS and accuracy moves from 53.40% to 53.60%.</p>
+<p>Taking LLaDA-8B-Instruct on GSM8K-CoT as an example, LBS alone already improves the efficiency of block-wise decoding, and adding LPS raises throughput further with a small change in accuracy:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Decoding method</th>
+					<th>Accuracy</th>
+					<th>Throughput (TPS)</th>
+					<th>Speedup over vanilla</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Vanilla</td>
+					<td>79.07%</td>
+					<td>17.04</td>
+					<td>1.00×</td>
+			</tr>
+			<tr>
+					<td>Fast-dLLM</td>
+					<td>78.70%</td>
+					<td>79.20</td>
+					<td>4.65×</td>
+			</tr>
+			<tr>
+					<td>EB-Decode, LBS only</td>
+					<td>79.68%</td>
+					<td>86.80</td>
+					<td>5.09×</td>
+			</tr>
+			<tr>
+					<td>EB-Decode, LBS + LPS</td>
+					<td>78.24%</td>
+					<td>104.55</td>
+					<td>6.14×</td>
+			</tr>
+	</tbody>
+</table>
+<p>The learned block selection contributes on its own as well. On the same task, keeping all three filters but choosing candidate blocks at random gives 76.80% accuracy at 23.96 TPS, while LBS reaches 79.68% and 86.80 TPS. The gains do not come from the EOS, gap, and block-size constraints alone.</p>
+<p><strong>Deployment: lightweight routers that compose with caching.</strong> LBS and LPS contain roughly 0.6M and 0.03M trainable parameters. Measured on an A100, their combined routing overhead is about 6.21% of a single base-model forward pass. The speedup therefore comes from taking fewer denoising steps rather than from making each forward pass cheaper.</p>
+<p>EB-Decode also composes with KV caching. For non-contiguous blocks, the cache reuses keys and values outside the leftmost and rightmost selected positions. In a separate experiment on four A100 GPUs, dual caching raises EB-Decode throughput from 65.27 to 78.43 TPS, an additional 1.20×, and EB-Decode still reaches about 1.38× the throughput of Fast-dLLM under the same dual-cache setting.</p>
+<p>Our current evaluation covers generation lengths of 256 and 512 tokens and inference at batch size 1. Longer outputs, continuous batching, and system-level optimization remain to be verified.</p>
+<p><strong>Summary.</strong> EB-Decode starts from two properties of the denoising process: how prediction difficulty is distributed across positions, and how early predictions stabilize in time. LBS groups positions of similar difficulty, and LPS removes the repeated deferral of predictions that have already settled. With these two lightweight modules, a frozen diffusion language model finishes generation in fewer denoising steps and converts more of its latent parallelism into measured throughput.</p>
+<br>
+<br>
+
+		</div>
+	</article>
+</main>
+
+
+
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2026 EcoAI Lab at Purdue University.
+		</div>
+	</div>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+    
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/responsive-menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+</body>
+</html>
